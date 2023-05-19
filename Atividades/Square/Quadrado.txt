@@ -1,0 +1,14 @@
+Pegar caneta
+Remover tampa
+Determine o tamanho da lateral do quadrado = [X]
+Escolher posição inicial no quadro proporcional ao tamanho [X] no minimo 2 * [X] de distancia das bordas
+Marcar ponto A
+Traçar uma reta de tamanho [X]
+Marcar ponto B
+Traçar uma reta de tamanho [X] perpendicular a reta AB
+Marcar ponto C
+Traçar uma reta de tamanho [X] perpendicular a reta BC
+Marcar ponto D
+Traçar uma reta de tamanho [X] perpendicular a reta CD : Conectando-a ao ponto A
+Tire a caneta do quadro
+Tampe a caneta
