@@ -15,3 +15,5 @@ def rotaCompleta(cidades):
             listaSelCidades.append(tempInput)
 def calcularRota():
     pass
+def destinos():
+    pass
