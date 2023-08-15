@@ -10,7 +10,8 @@ def main():
     shortest_lines()
 
 def read_file():
-    with open("benchmark\data.csv", "r") as file:
+    file = "data.csv"
+    with open(file, "r") as file:
         csvreader = csv.reader(file)
         for row in csvreader:
             if row[0] != "linguagem" :

@@ -11,6 +11,7 @@ def main():
 
 def get_input():
     for i in range(collumns):
+        print("Insira o valor {}:".format(i+1))
         matrix[0].append(int(input()))
 
 def set_matrix():
