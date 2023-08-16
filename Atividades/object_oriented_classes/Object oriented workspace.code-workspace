@@ -1,13 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "benchmark"
-		},
-		{
-			"path": "matriz"
-		},
-		{
-			"path": "imposto"
+			"path": "extras/imposto"
 		}
 	],
 	"settings": {}
