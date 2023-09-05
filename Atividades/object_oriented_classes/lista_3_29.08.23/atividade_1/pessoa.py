@@ -50,6 +50,30 @@ class Pessoa:
         if self.pai:
             nomePai = self.pai.getNome()
         if self.mae:
-            nomeMae = self.getNome()
+            nomeMae = self.mae.getNome()
         
         print("{}\t{}\t{}\t{}\t{}\t".format(nome, sexo, corOlhos, nomePai, nomeMae))
+
+    def verificarIgualdadeSemantica(self, pessoa):
+        if self.mae != None and pessoa.pai != None:
+            if self.getNome() == pessoa.getNome() and self.mae.getNome() == pessoa.mae.getNome():
+                return True
+        return False
+    
+    def verificarFraternidade(self, pessoa):
+        if self.mae != None and pessoa.pai != None:
+            if self.mae == pessoa.mae or self.pai == pessoa.pai:
+                return True
+        return False
+
+    def verificarAntecedente(self, pessoa):
+        parent = self
+        while parent != None:
+            if parent.pai == pessoa:
+                return True
+            parent = parent.pai
+        while parent != None:
+            if parent.mae == pessoa:
+                return True
+            parent = parent.mae
+        return False

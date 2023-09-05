@@ -4,8 +4,10 @@ class System():
     def startPerson(self):
         mae = Pessoa("Mae", "F", "A")
         mae.imprimeDados()
+        
         pai = Pessoa("Pai", "M", "A")
         pai.imprimeDados()
+        
         filho = mae.geraPessoa("Filho","M",pai)
         filho.imprimeDados()
 
