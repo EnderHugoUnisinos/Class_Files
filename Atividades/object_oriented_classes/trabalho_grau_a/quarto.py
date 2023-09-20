@@ -6,16 +6,16 @@ class Quarto:
         self.consumo = consumo
 
     def adicionaConsumo(self, consumo):
-        pass
+        self.consumo.append(consumo)
 
-    def adicionaConsumo(self):
-        pass
+    def listaConsumo(self):
+        return self.consumo
 
     def valorTotalConsumo(self):
         pass
 
     def limpaConsumo(self):
-        pass
+        self.consumo = []
 
     def serializar(self):
         pass
