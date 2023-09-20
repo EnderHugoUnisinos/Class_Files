@@ -32,3 +32,9 @@ class Pousada:
 
     def realizarCheckOut(self, cliente):
         pass
+
+    def serializar(self):
+        pass
+
+    def deserializar(self):
+        pass

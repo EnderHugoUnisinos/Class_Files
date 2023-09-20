@@ -16,3 +16,9 @@ class Quarto:
 
     def limpaConsumo(self):
         pass
+
+    def serializar(self):
+        pass
+
+    def deserializar(self):
+        pass

@@ -5,3 +5,9 @@ class Reserva:
         self.cliente = cliente
         self.quarto = quarto
         self.status = status
+    
+    def serializar(self):
+        pass
+
+    def deserializar(self):
+        pass

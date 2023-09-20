@@ -3,3 +3,9 @@ class Produto:
         self.codigo = codigo
         self.nome = nome
         self.preco = preco
+
+    def serializar(self):
+        pass
+
+    def deserializar(self):
+        pass
