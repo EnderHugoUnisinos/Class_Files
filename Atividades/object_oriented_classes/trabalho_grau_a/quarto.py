@@ -1,5 +1,6 @@
 class Quarto:
-    def __init__ (self, numero, categoria, diaria, consumo = []):
+    def __init__ (self, id, numero, categoria, diaria, consumo = []):
+        self.id = id
         self.numero = numero
         self.categoria = categoria
         self.diaria = diaria

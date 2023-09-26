@@ -4,7 +4,8 @@ from utils import Utils
 import re
 
 class Pousada:
-    def __init__ (self, nome, contato, quartos, reservas = [], produtos = []):
+    def __init__ (self, id, nome, contato, quartos, reservas = [], produtos = []):
+        self.id = id
         self.nome = nome
         self.contato = contato
         self.quartos = quartos
