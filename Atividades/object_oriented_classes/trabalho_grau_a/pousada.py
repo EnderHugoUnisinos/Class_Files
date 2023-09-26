@@ -4,8 +4,7 @@ from utils import Utils
 import re
 
 class Pousada:
-    def __init__ (self, id, nome, contato, quartos, reservas = [], produtos = []):
-        self.id = id
+    def __init__ (self,nome, contato, quartos = [], reservas = [], produtos = []):
         self.nome = nome
         self.contato = contato
         self.quartos = quartos
@@ -66,10 +65,27 @@ class Pousada:
         return modified
 
     def serializar(self):
-        #serialized_string = "{};{};{};{};{}".format(self.nome,self.contato,self.quartos,self.reservas,self.produtos)
-        #return serialized_string
-        pass
+        
+        quartos_string = ""
+        for i in self.quartos:
+            quartos_string = "{}{},".format(quartos_string,i.serializar())
+        
+        reservas_string = ""
+        for i in self.reservas:
+            reservas_string = "{}{},".format(reservas_string,i.serializar())
+           
+        produtos_string = ""
+        for i in self.produtos:
+            produtos_string = "{}{},".format(produtos_string,i.serializar())
+        
+        serialized_string = "{};{};{};{};{};".format(self.nome,self.contato)
+        return serialized_string
     
     def deserializar(self, string):
-        #deserialize
+        #guide string:
+        # ([{([]:[]:) | ()|} / {}/] , [],) ; (); -> <;> (,) (/) (|) (:)
+        #id;nome;contato;numeroQuarto/categoriaQuarto/diariaQuarto/consumoQuarto|...,...|;diaInicioReserva/diaFimReserva/clienteReserva/numeroQuartoReserva|categoriaQuartoReserva|diariaQuartoReserva|consumoQuartoReserva:...|/statusReserva;codigoProduto/nomeProduto/precoProduto,...; 
+        split_string = string.strip().split(";")
+        
+        #attribute values
         pass

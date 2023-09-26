@@ -5,7 +5,8 @@ class Produto:
         self.preco = preco
 
     def serializar(self):
-        pass
+        serialized_string = "{}/{}/{}".format(self.codigo,self.nome,self.preco)
+        return serialized_string
 
     def deserializar(self):
         pass

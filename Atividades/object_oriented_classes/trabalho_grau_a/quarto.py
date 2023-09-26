@@ -1,25 +1,28 @@
 class Quarto:
-    def __init__ (self, id, numero, categoria, diaria, consumo = []):
-        self.id = id
+    def __init__ (self, numero, categoria, diaria, consumo = []):
         self.numero = numero
         self.categoria = categoria
         self.diaria = diaria
         self.consumo = consumo
-
-    def adicionaConsumo(self, consumo):
+        
+    def adiciona_consumo(self, consumo):
         self.consumo.append(consumo)
 
-    def listaConsumo(self):
+    def lista_consumo(self):
         return self.consumo
 
-    def valorTotalConsumo(self):
+    def valor_total_consumo(self):
         pass
 
-    def limpaConsumo(self):
+    def limpa_consumo(self):
         self.consumo = []
 
     def serializar(self):
-        pass
-
+        consumo_string = ""
+        for j in self.lista_consumo():
+            consumo_string = "{}{}|".format(consumo_string, j)
+        serialized_string = "{}/{}/{}/{}".format(serialized_string,self.numero,self.categoria,self.diaria,consumo_string)
+        return serialized_string
+    
     def deserializar(self):
         pass
