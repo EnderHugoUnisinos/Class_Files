@@ -1,5 +1,5 @@
 class Reserva:
-    def __init__ (self, dia_inicio, dia_fim, cliente, quarto, status = 'A'):
+    def __init__ (self, dia_inicio = None, dia_fim = None, cliente = None, quarto = None, status = 'A'):
         self.dia_inicio = dia_inicio
         self.dia_fim = dia_fim
         self.cliente = cliente
@@ -20,11 +20,8 @@ class Reserva:
         self.status = status
 
     def serializar(self):
-        consumo_string = ""
-        for j in self.quarto.lista_consumo():
-            consumo_string = "{}{}:".format(consumo_string, j)
-        serialized_string = "{}/{}/{}/{}|{}|{}|{}".format(self.dia_inicio, self.dia_fim, self.cliente, self.quarto.numero, self.quarto.categoria, self.quarto.diaria, consumo_string, self.status)
+        serialized_string = "{}/{}/{}/{}/{}".format(self.dia_inicio, self.dia_fim, self.cliente, self.quarto.numero, self.status)
         return serialized_string
 
-    def deserializar(self):
-        pass
+    def deserializar(self, string):
+        split_string = string.split("/")

@@ -1,5 +1,6 @@
 from reserva import Reserva 
 from quarto import Quarto
+from produto import Produto
 from utils import Utils
 import re
 
@@ -65,27 +66,10 @@ class Pousada:
         return modified
 
     def serializar(self):
-        
-        quartos_string = ""
-        for i in self.quartos:
-            quartos_string = "{}{},".format(quartos_string,i.serializar())
-        
-        reservas_string = ""
-        for i in self.reservas:
-            reservas_string = "{}{},".format(reservas_string,i.serializar())
-           
-        produtos_string = ""
-        for i in self.produtos:
-            produtos_string = "{}{},".format(produtos_string,i.serializar())
-        
-        serialized_string = "{};{};{};{};{};".format(self.nome,self.contato)
+        serialized_string = "{};{};".format(self.nome,self.contato)
         return serialized_string
     
     def deserializar(self, string):
-        #guide string:
-        # ([{([]:[]:) | ()|} / {}/] , [],) ; (); -> <;> (,) (/) (|) (:)
-        #id;nome;contato;numeroQuarto/categoriaQuarto/diariaQuarto/consumoQuarto|...,...|;diaInicioReserva/diaFimReserva/clienteReserva/numeroQuartoReserva|categoriaQuartoReserva|diariaQuartoReserva|consumoQuartoReserva:...|/statusReserva;codigoProduto/nomeProduto/precoProduto,...; 
         split_string = string.strip().split(";")
-        
-        #attribute values
-        pass
+        split_string[0] #nome
+        split_string[1] #contato
