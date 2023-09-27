@@ -2,7 +2,6 @@ from reserva import Reserva
 from quarto import Quarto
 from produto import Produto
 from utils import Utils
-import re
 
 class Pousada:
     def __init__ (self,nome, contato, quartos = [], reservas = [], produtos = []):

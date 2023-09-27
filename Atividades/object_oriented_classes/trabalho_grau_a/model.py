@@ -1,4 +1,4 @@
-from view import SystemView
+from main import SystemView
 class SystemModel:
     def __init__(self) -> None:
         self.view = SystemView()

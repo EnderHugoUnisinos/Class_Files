@@ -11,7 +11,7 @@ class Quarto:
     def lista_consumo(self):
         return self.consumo
 
-    def valor_total_consumo(self):
+    def valor_total_consumo(self, produtos):
         pass
 
     def limpa_consumo(self):
@@ -25,5 +25,14 @@ class Quarto:
         serialized_string = "{}/{}/{}/{}".format(serialized_string,self.numero,self.categoria,self.diaria,consumo_string)
         return serialized_string
     
-    def deserializar(self):
-        pass
+    def deserializar(self, string):
+        split_string = string.split("/")
+        split_string[0] #numero
+        split_string[1] #categoria
+        split_string[2] #diaria
+        split_string[3] #consumo
+        
+        self.numero = split_string[0]
+        self.categoria = split_string[1]
+        self.diaria = float(split_string[2])
+        self.consumo = split_string[3].split("|").strip()

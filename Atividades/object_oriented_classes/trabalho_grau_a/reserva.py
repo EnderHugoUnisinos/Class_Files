@@ -23,5 +23,16 @@ class Reserva:
         serialized_string = "{}/{}/{}/{}/{}".format(self.dia_inicio, self.dia_fim, self.cliente, self.quarto.numero, self.status)
         return serialized_string
 
-    def deserializar(self, string):
+    def deserializar(self, string, quartos):
         split_string = string.split("/")
+        split_string[0] #dia inicio
+        split_string[1] #dia fim
+        split_string[2] #cliente
+        split_string[3] #numero do quarto
+        split_string[4] #status
+        
+        self.dia_inicio = split_string[0]
+        self.dia_fim = split_string[1]
+        self.cliente = split_string[2]
+        #get quarto from list quartos
+        self.status = split_string[4]
