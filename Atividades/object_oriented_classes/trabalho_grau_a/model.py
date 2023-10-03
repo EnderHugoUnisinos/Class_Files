@@ -1,66 +1,117 @@
-from main import SystemView
+from view import SystemView
+from controller import SystemController
+from utils import Utils
+
 class SystemModel:
     def __init__(self) -> None:
         self.view = SystemView()
+        self.controller = SystemController("assets/pousada.txt","assets/produto.txt","assets/quarto.txt","assets/reserva.txt")
+        self.utils = Utils()
+        self.controller.carregar_dados()
 
-    def model_menu_principal(self):
-        user_input = self.view.view_menu_principal()
-        match user_input:
-            case 0:
-                quit()
-            case 1:
-                pass
-            case 2:
-                pass
-            case 3:
-                pass
-            case 4:
-                pass
-            case 5:
-                pass
-            case 6:
-                pass
-            case 7:
-                pass
-            case 8:
-                self.model_menu_quartos()
-            case 9:
-                pass
-            case default:
-                pass
-    
-    def model_menu_quartos(self):
-        user_input = self.view.view_menu_quartos()
-        match user_input:
-            case 0:
-                self.model_menu_principal()
-            case 1:
-                pass
-            case 2:
-                pass
-            case 3:
-                pass
-            case 4:
-                pass
-            case 5:
-                pass
-            case default:
-                pass
+    def menu_principal(self):
+        while True:
+            user_input = self.view.menu_principal()
+            match user_input:
+                case "0":
+                    quit()
+                case "1":
+                    user_input = self.view.consultar_disponibilidade()
+                    test_result = self.controller.consultar_disponibilidade(user_input["data"], user_input["quarto"])
+                    self.view.clear_console()
+                    #Testa se a consulta retornou algo
+                    if test_result != None:
+                        self.view.print_data(str(test_result))
+                    else:
+                        self.view.print_data("Quarto indisponivel.")
+                case "2":
+                    user_input = self.view.consultar_reserva()
+                    test_result = self.controller.consultar_reserva(user_input["data"],user_input["cliente"],user_input["quarto"])
+                    self.view.clear_console()
+                    if test_result != None:
+                        for i in test_result:
+                            self.view.print_data(str(i))
+                    else:
+                        self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
+                case "3":
+                    user_input = self.view.realizar_reserva()
+                    test_result = self.controller.consultar_disponibilidade(user_input["data"], user_input["quarto"])
+                    self.view.clear_console()
+                    #Testa se a consulta retornou algo
+                    if test_result == None:
+                        try:
+                            self.controller.realizar_reserva(user_input)
+                            self.view.success_message("Reserva realizada com sucesso")
+                        except:
+                            self.view.error_message("Ocorreu um erro ao inserir a reserva","Entre em contato com o desenvolvedor")
+                    else:
+                        self.view.print_data("Quarto indisponivel.")               
+                case "4":
+                    user_input = self.view.cancelar_reserva()
+                    test_result = self.controller.consultar_reserva(None, user_input, None)
+                    self.view.clear_console()
+                    #Testa se a consulta retornou algo
+                    if test_result[0] != None:
+                        try:
+                            self.controller.cancelar_reserva(user_input)
+                            self.view.success_message("Reserva cancelada com sucesso")
+                        except:
+                            self.view.error_message("Ocorreu um erro ao cancelar a reserva","Entre em contato com o desenvolvedor")
+                    else:
+                        self.view.print_data("Nenhuma reserva encontrada.")   
+                case "5":
+                    user_input = self.view.realizar_checkin()
+                case "6":
+                    produtos = self.controller.get_produtos()
+                    user_input = self.view.realizar_checkout()
+                case "7":
+                    produtos = self.controller.get_produtos()
+                    user_input = self.view.registrar_consumo(produtos)
+                case "8":
+                    self.menu_quartos()
+                case "9":
+                    self.menu_produtos()
+                case "10":
+                    self.controller.salvar_dados()
+                case default:
+                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 9)")
+            self.view.await_input()
+            
+    def menu_quartos(self):
+        user_input = self.view.menu_quartos()
+        while True:
+            match user_input:
+                case "0":
+                    break
+                case "1":
+                    pass
+                case "2":
+                    pass
+                case "3":
+                    pass
+                case "4":
+                    pass
+                case "5":
+                    pass
+                case default:
+                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 5)")
+            self.view.await_input()
 
-    def model_menu_produtos(self):
-        user_input = self.view.view_menu_produtos()
-        match user_input:
-            case 0:
-                self.model_menu_principal()
-            case 1:
-                pass
-            case 2:
-                pass
-            case 3:
-                pass
-            case 4:
-                pass
-            case default:
-                pass
-        
+    def menu_produtos(self):
+        user_input = self.view.menu_produtos()
+        while True:
+            match user_input:
+                case "0":
+                    break
+                case "1":
+                    pass
+                case "2":
+                    pass
+                case "3":
+                    pass
+                case "4":
+                    pass
+                case default:
+                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 4)")
+            self.view.await_input()
         

@@ -6,6 +6,12 @@ class Reserva:
         self.quarto = quarto
         self.status = status
     
+    def __str__(self):
+        return f'Cliente: {self.cliente}\nDia de inicio: {self.dia_inicio}\nDia final: {self.dia_fim}\n---\nQuarto: \n{self.quarto}\n---\nStatus: {self.status}' 
+    
+    def __repr__(self):
+        return f'Quarto({self.dia_inicio},{self.dia_fim},{self.cliente},{self.quarto},{self.status})'
+    
     def get_cliente(self):
         return self.cliente
 
@@ -24,7 +30,7 @@ class Reserva:
         return serialized_string
 
     def deserializar(self, string, quartos):
-        split_string = string.split("/")
+        split_string = string.strip().split("/")
         split_string[0] #dia inicio
         split_string[1] #dia fim
         split_string[2] #cliente
@@ -34,5 +40,9 @@ class Reserva:
         self.dia_inicio = split_string[0]
         self.dia_fim = split_string[1]
         self.cliente = split_string[2]
-        #get quarto from list quartos
+        for i in quartos:
+            if i.numero == split_string[3]:
+                self.quarto = i
+                break
         self.status = split_string[4]
+        return self

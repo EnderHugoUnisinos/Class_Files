@@ -3,8 +3,16 @@ class Quarto:
         self.numero = numero
         self.categoria = categoria
         self.diaria = diaria
-        self.consumo = consumo
         
+        #consumo provavelmente se encaixa melhor em reserva, mas vamos manter aqui de acordo com o diagrama
+        self.consumo = consumo
+    
+    def __str__(self):
+        return f'Numero: {self.numero}\nCategoria: {self.categoria}\nDiaria: {self.diaria}' 
+    
+    def __repr__(self):
+        return f'Quarto({self.numero},{self.categoria},{self.diaria},{self.consumo})'
+    
     def adiciona_consumo(self, consumo):
         self.consumo.append(consumo)
 
@@ -26,7 +34,7 @@ class Quarto:
         return serialized_string
     
     def deserializar(self, string):
-        split_string = string.split("/")
+        split_string = string.strip().split("/")
         split_string[0] #numero
         split_string[1] #categoria
         split_string[2] #diaria
@@ -35,4 +43,6 @@ class Quarto:
         self.numero = split_string[0]
         self.categoria = split_string[1]
         self.diaria = float(split_string[2])
-        self.consumo = split_string[3].split("|").strip()
+        consumoString = split_string[3]
+        self.consumo = consumoString.strip().split(":")
+        return self
