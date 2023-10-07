@@ -24,7 +24,7 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto que deseja consultar: ")
-            if not Utils().validar_formato_numero_quarto(quarto_prevalid):
+            if not Utils().is_valid_room_number(quarto_prevalid):
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -32,7 +32,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira a data no padrão DD-MM-AAAA: ")
-            if not Utils().validar_formato_data(data_prevalid):
+            if not Utils().is_valid_date_format(data_prevalid):
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -54,7 +54,7 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto da reserva que deseja consultar: ")
-            if not Utils().validar_formato_numero_quarto(quarto_prevalid) and quarto_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
+            if not Utils().is_valid_room_number(quarto_prevalid) and quarto_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -65,7 +65,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira a data da reserva que deseja consultar no padrão DD-MM-AAAA: ")
-            if not Utils().validar_formato_data(data_prevalid) and data_prevalid.upper() != "X" and data_prevalid.strip() != "":
+            if not Utils().is_valid_date_format(data_prevalid) and data_prevalid.upper() != "X" and data_prevalid.strip() != "":
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -82,7 +82,7 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto: ")
-            if not Utils().validar_formato_numero_quarto(quarto_prevalid):
+            if not Utils().is_valid_room_number(quarto_prevalid):
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -90,7 +90,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira o dia de inicio no padrão DD-MM-AAAA: ")
-            if not Utils().validar_formato_data(data_prevalid):
+            if not Utils().is_valid_date_format(data_prevalid):
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -98,7 +98,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira o dia de inicio no padrão DD-MM-AAAA: ")
-            if not Utils().validar_formato_data(data_prevalid):
+            if not Utils().is_valid_date_format(data_prevalid):
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -127,7 +127,7 @@ class SystemView:
         raw_input = ""
         while raw_input != "X":
             raw_input = input("Insira o codigo dos produtos a registrar (um de cada vez), digite \"X\" para encerrar o registro:")
-            if raw_input != "X" and Utils().validar_formato_codigo_produto(raw_input) and raw_input.strip() != "":
+            if raw_input != "X" and Utils().is_valid_product_code(raw_input) and raw_input.strip() != "":
                 user_input["consumo"].append(raw_input)
         return user_input
 

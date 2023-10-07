@@ -1,133 +1,81 @@
-from view import SystemView
-from controller import SystemController
+from pousada import Pousada
 from utils import Utils
-
 class SystemModel:
-    def __init__(self) -> None:
-        self.view = SystemView()
-        self.controller = SystemController("assets/pousada.txt","assets/produto.txt","assets/quarto.txt","assets/reserva.txt")
-        self.utils = Utils()
-        self.controller.carregar_dados()
+    def __init__(self, pousada_path, produto_path, quarto_path, reserva_path) -> None:
+        self.pousada_path = pousada_path
+        self.produto_path = produto_path
+        self.quarto_path = quarto_path
+        self.reserva_path = reserva_path
+        self.pousada = Pousada()
+    
+    def get_paths(self):
+        return [self.pousada_path, self.produto_path, self.quarto_path, self.reserva_path]
 
-    def menu_principal(self):
-        while True:
-            user_input = self.view.menu_principal()
-            match user_input:
-                case "0":
-                    quit()
-                case "1":
-                    user_input = self.view.consultar_disponibilidade()
-                    result = self.controller.consultar_disponibilidade(user_input["data"], user_input["quarto"])
-                    self.view.clear_console()
-                    #Testa se a consulta retornou algo
-                    if result != None:
-                        self.view.print_data(str(result))
-                    else:
-                        self.view.print_data("Quarto indisponivel.")
-                case "2":
-                    produtos = self.controller.get_produtos()
-                    user_input = self.view.consultar_reserva()
-                    result = self.controller.consultar_reserva(user_input["data"],user_input["cliente"],user_input["quarto"])
-                    self.view.clear_console()
-                    if result != None:
-                        self.view.display_reservas(result, produtos)
-                    else:
-                        self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
-                case "3":
-                    user_input = self.view.realizar_reserva()
-                    result = self.controller.consultar_disponibilidade([user_input["dia_inicio"],user_input["dia_fim"]], user_input["quarto"])
-                    self.view.clear_console()
-                    #Testa se a consulta retornou algo
-                    if result == None:
-                        try:
-                            self.controller.realizar_reserva(user_input)
-                            self.view.success_message("Reserva realizada com sucesso")
-                        except:
-                            self.view.error_message("Ocorreu um erro ao inserir a reserva","Entre em contato com o desenvolvedor")
-                    else:
-                        self.view.print_data("Quarto indisponivel.")               
-                case "4":
-                    user_input = self.view.cancelar_reserva()
-                    result = self.controller.consultar_reserva(None, user_input, None)
-                    self.view.clear_console()
-                    #Testa se a consulta retornou algo
-                    if result[0] != None:
-                        try:
-                            self.controller.cancelar_reserva(user_input)
-                            self.view.success_message("Reserva cancelada com sucesso")
-                        except:
-                            self.view.error_message("Ocorreu um erro ao cancelar a reserva","Entre em contato com o desenvolvedor")
-                    else:
-                        self.view.print_data("Nenhuma reserva encontrada.")   
-                case "5":
-                    produtos = self.controller.get_produtos()
-                    user_input = self.view.realizar_checkin()
-                    result = self.controller.search_for_reservas(user_input)
-                    self.view.clear_console()
-                    if result != None:
-                        self.view.display_reservas(result, produtos)
-                        self.controller.realizar_check_in(result)
-                    else: 
-                        self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
-                case "6":
-                    produtos = self.controller.get_produtos()
-                    user_input = self.view.realizar_checkout()
-                    result = self.controller.search_for_reservas(user_input)
-                    self.view.clear_console()
-                    if result != None:
-                        self.view.display_reservas(result, produtos)
-                        self.controller.realizar_check_out(result)
-                    else:
-                        self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
-                case "7":
-                    produtos = self.controller.get_produtos()
-                    user_input = self.view.registrar_consumo(produtos)
-                    self.controller.registrar_consumo(user_input["cliente"],user_input["consumo"])
-                case "8":
-                    self.menu_quartos()
-                case "9":
-                    self.menu_produtos()
-                case "10":
-                    self.controller.salvar_dados()
-                case default:
-                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 9)")
-            self.view.await_input()
-            
-    def menu_quartos(self):
-        user_input = self.view.menu_quartos()
-        while True:
-            match user_input:
-                case "0":
-                    break
-                case "1":
-                    pass
-                case "2":
-                    pass
-                case "3":
-                    pass
-                case "4":
-                    pass
-                case "5":
-                    pass
-                case default:
-                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 5)")
-            self.view.await_input()
+    def get_pousada(self):
+        return self.pousada
 
-    def menu_produtos(self):
-        user_input = self.view.menu_produtos()
-        while True:
-            match user_input:
-                case "0":
-                    break
-                case "1":
-                    pass
-                case "2":
-                    pass
-                case "3":
-                    pass
-                case "4":
-                    pass
-                case default:
-                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 4)")
-            self.view.await_input()
+    def salvar_dados(self):
+        dadosDict = self.pousada.salvar_dados()
+        paths = self.get_paths()
+        self.write_to_file(dadosDict["pousada"], paths[0])
+        self.write_to_file(dadosDict["produtos"], paths[1])
+        self.write_to_file(dadosDict["quartos"], paths[2])
+        self.write_to_file(dadosDict["reservas"], paths[3])
+
+    def carregar_dados(self):
+        paths = self.get_paths()
+        pousadaString = self.read_from_file(paths[0])
+        produtoStrings = self.read_from_file(paths[1])
+        quartoStrings = self.read_from_file(paths[2])
+        reservaStrings = self.read_from_file(paths[3])
+        self.get_pousada().carregar_dados(pousadaString, quartoStrings, reservaStrings, produtoStrings)
+    
+    def realizar_check_in(self, reservas):
+        self.get_pousada().realizar_check_in(reservas)
+    
+    def realizar_check_out(self, reservas):
+        return self.get_pousada().realizar_check_out(reservas)
+
+    def search_for_reservas(self, cliente):
+        return self.get_pousada().search_for_reservas(cliente)
+
+    def cancelar_reserva(self, cliente):
+        self.get_pousada().cancela_reserva(cliente)
+
+    def realizar_reserva(self, dados):
+        self.get_pousada().realiza_reserva(dados["dia_inicio"],dados["dia_fim"],dados["cliente"],self.get_pousada().search_for_quarto(dados["quarto"]))
+
+    def get_produtos(self):
+        produtos = self.get_pousada().get_produtos()
+        return produtos
+    
+    def write_to_file(self, string_list, path):
+        try:
+            with open(path, "w") as file:
+                file.writelines(line + "\n" for line in string_list)
+            return True
+        except: 
+            return False
+    
+    def read_from_file(self, path):
+        try:
+            with open(path, "r") as file:
+                string = file.readlines()
+            return string
+        except:
+            return False
+
+    def consultar_disponibilidade(self, data, quarto):
+        return self.get_pousada().consulta_disponibilidade(data, quarto)
         
+    def consultar_reserva(self, data, cliente, quarto):
+        return self.get_pousada().consulta_reserva(data, cliente, quarto)
+
+    def registrar_consumo(self, cliente, consumo):
+        modified = 0
+        for i in self.search_for_reservas(cliente):
+            quarto = i.get_quarto()
+            for j in consumo:
+                quarto.adiciona_consumo(j)
+                modified += 1
+        return modified

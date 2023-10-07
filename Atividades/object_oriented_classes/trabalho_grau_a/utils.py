@@ -1,80 +1,41 @@
+from datetime import datetime
 class Utils:
-    def verificar_data_overlap(self, data_reservada, data_teste):
-        data_reservada_separated = [data_reservada[0].split("-"),data_reservada[1].split("-")]
-        data_teste_separated = [data_teste.split("-")]
-        
-        data_reservada_separated = {"start": {"day": int(data_reservada_separated[0][0]),"month": int(data_reservada_separated[0][1]),"year" : int(data_reservada_separated[0][2])}, "ending": {"day": int(data_reservada_separated[1][0]),"month": int(data_reservada_separated[1][1]),"year" : int(data_reservada_separated[1][2])}}
-        data_teste_separated = {"day": int(data_teste_separated[0][0]),"month": int(data_teste_separated[0][1]),"year" : int(data_teste_separated[0][2])}
+    @staticmethod
+    def check_date_overlap(reserved_dates, test_date):
+        reserved_start_date, reserved_end_date = map(
+            lambda x: datetime.strptime(x, "%Y-%m-%d"), reserved_dates
+        )
+        test_date = datetime.strptime(test_date, "%Y-%m-%d")
 
-        day = data_reservada_separated["start"]["day"]
-        month = data_reservada_separated["start"]["month"]
-        year = data_reservada_separated["start"]["year"]
-        
-        overlap_found = False
-
-        while True:
-            if day > 31:
-                day = 0
-                month += 1
-            if month > 12:
-                month = 0
-                year += 1
-            if day == data_reservada_separated["ending"]["day"] and month == data_reservada_separated["ending"]["month"] and year == data_reservada_separated["ending"]["year"]:
-                break
-            if day == data_teste_separated["day"] and month == data_teste_separated["month"] and year == data_teste_separated["year"]:
-                overlap_found = True
-            day += 1
-        return overlap_found
-    def validar_formato_data(self, string):
+        if reserved_start_date <= test_date <= reserved_end_date:
+            return True
+        else:
+            return False
+    @staticmethod
+    def is_valid_date_format(date_string):
         try:
-            split_string = string.split("-")
-            int_list = [int(split_string[0]),int(split_string[1]),int(split_string[2])]
-            if int_list[0] != 0 and int_list[1] != 0 and int_list[2] != 0:
-                validation_result = True
-            else:
-                validation_result = False
-        except:
-            validation_result = False
-        return validation_result
-    def validar_formato_numero_quarto(self, string):
+            datetime.strptime(date_string, "%Y-%m-%d")
+            return True
+        except ValueError:
+            return False
+    @staticmethod
+    def is_valid_room_number(room_number):
         try:
-            numero = int(string)
-            if numero > 0:
-                validation_result = True
-            else:
-                validation_result = False
-        except:
-            validation_result = False
-        return validation_result
-    def validar_formato_codigo_produto(self, string):
+            room_number = int(room_number)
+            return room_number > 0
+        except ValueError:
+            return False
+    @staticmethod
+    def is_valid_product_code(product_code):
         try:
-            numero = int(string)
-            if numero > 0:
-                validation_result = True
-            else:
-                validation_result = False
-        except:
-            validation_result = False
-        return validation_result
-    def contar_dias(self, datas):
-        datas_separated = [datas[0].split("-"),datas[1].split("-")]
-        datas_separated = {"start": {"day": int(datas_separated[0][0]),"month": int(datas_separated[0][1]),"year" : int(datas_separated[0][2])}, "ending": {"day": int(datas_separated[1][0]),"month": int(datas_separated[1][1]),"year" : int(datas_separated[1][2])}}
-
-        day = datas_separated["start"]["day"]
-        month = datas_separated["start"]["month"]
-        year = datas_separated["start"]["year"]
-        
-        count = 0
-
-        while True:
-            if day > 31:
-                day = 0
-                month += 1
-            if month > 12:
-                month = 0
-                year += 1
-            if day == datas_separated["ending"]["day"] and month == datas_separated["ending"]["month"] and year == datas_separated["ending"]["year"]:
-                break
-            day += 1
-            count += 1
-        return count
+            product_code = int(product_code)
+            return product_code > 0
+        except ValueError:
+            return False
+    @staticmethod
+    def count_days(date_range):
+        start_date, end_date = date_range
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date, "%Y-%m-%d")
+        delta = end_date - start_date
+        return delta.days

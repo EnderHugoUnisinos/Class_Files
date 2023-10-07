@@ -1,8 +1,8 @@
-from model import SystemModel
+from controller import SystemController
 class System():
     def iniciar_programa(self):
-        system_model = SystemModel()
-        system_model.menu_principal()
+        system_controller = SystemController()
+        system_controller.menu_principal()
 
 def main():
     system = System()

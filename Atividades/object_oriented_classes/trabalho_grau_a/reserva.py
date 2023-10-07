@@ -35,7 +35,7 @@ class Reserva:
         self.dia_fim = data[1]
 
     def contar_dias(self):
-        return Utils().contar_dias(self.get_datas())
+        return Utils().count_days(self.get_datas())
     
     def calcular_diaria(self):
         dias = self.contar_dias()

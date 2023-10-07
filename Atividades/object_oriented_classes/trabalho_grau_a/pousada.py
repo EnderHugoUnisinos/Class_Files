@@ -71,7 +71,7 @@ class Pousada:
             for i in self.get_reservas():
                 if i.get_quarto().get_numero() == numero:
                     reservaCount += 1
-                    if not Utils().verificar_data_overlap(i.get_datas(), data[0]) and not Utils().verificar_data_overlap(i.get_datas(), data[1]):
+                    if not Utils().check_date_overlap(i.get_datas(), data[0]) and not Utils().check_date_overlap(i.get_datas(), data[1]):
                         quarto = i.get_quarto()
         if reservaCount == 0:
             quarto = self.search_for_quarto(numero)
