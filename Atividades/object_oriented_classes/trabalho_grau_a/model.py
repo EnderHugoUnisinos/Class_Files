@@ -17,28 +17,28 @@ class SystemModel:
                     quit()
                 case "1":
                     user_input = self.view.consultar_disponibilidade()
-                    test_result = self.controller.consultar_disponibilidade(user_input["data"], user_input["quarto"])
+                    result = self.controller.consultar_disponibilidade(user_input["data"], user_input["quarto"])
                     self.view.clear_console()
                     #Testa se a consulta retornou algo
-                    if test_result != None:
-                        self.view.print_data(str(test_result))
+                    if result != None:
+                        self.view.print_data(str(result))
                     else:
                         self.view.print_data("Quarto indisponivel.")
                 case "2":
+                    produtos = self.controller.get_produtos()
                     user_input = self.view.consultar_reserva()
-                    test_result = self.controller.consultar_reserva(user_input["data"],user_input["cliente"],user_input["quarto"])
+                    result = self.controller.consultar_reserva(user_input["data"],user_input["cliente"],user_input["quarto"])
                     self.view.clear_console()
-                    if test_result != None:
-                        for i in test_result:
-                            self.view.print_data(str(i))
+                    if result != None:
+                        self.view.display_reservas(result, produtos)
                     else:
                         self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
                 case "3":
                     user_input = self.view.realizar_reserva()
-                    test_result = self.controller.consultar_disponibilidade(user_input["data"], user_input["quarto"])
+                    result = self.controller.consultar_disponibilidade([user_input["dia_inicio"],user_input["dia_fim"]], user_input["quarto"])
                     self.view.clear_console()
                     #Testa se a consulta retornou algo
-                    if test_result == None:
+                    if result == None:
                         try:
                             self.controller.realizar_reserva(user_input)
                             self.view.success_message("Reserva realizada com sucesso")
@@ -48,10 +48,10 @@ class SystemModel:
                         self.view.print_data("Quarto indisponivel.")               
                 case "4":
                     user_input = self.view.cancelar_reserva()
-                    test_result = self.controller.consultar_reserva(None, user_input, None)
+                    result = self.controller.consultar_reserva(None, user_input, None)
                     self.view.clear_console()
                     #Testa se a consulta retornou algo
-                    if test_result[0] != None:
+                    if result[0] != None:
                         try:
                             self.controller.cancelar_reserva(user_input)
                             self.view.success_message("Reserva cancelada com sucesso")
@@ -60,13 +60,29 @@ class SystemModel:
                     else:
                         self.view.print_data("Nenhuma reserva encontrada.")   
                 case "5":
+                    produtos = self.controller.get_produtos()
                     user_input = self.view.realizar_checkin()
+                    result = self.controller.search_for_reservas(user_input)
+                    self.view.clear_console()
+                    if result != None:
+                        self.view.display_reservas(result, produtos)
+                        self.controller.realizar_check_in(result)
+                    else: 
+                        self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
                 case "6":
                     produtos = self.controller.get_produtos()
                     user_input = self.view.realizar_checkout()
+                    result = self.controller.search_for_reservas(user_input)
+                    self.view.clear_console()
+                    if result != None:
+                        self.view.display_reservas(result, produtos)
+                        self.controller.realizar_check_out(result)
+                    else:
+                        self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
                 case "7":
                     produtos = self.controller.get_produtos()
                     user_input = self.view.registrar_consumo(produtos)
+                    self.controller.registrar_consumo(user_input["cliente"],user_input["consumo"])
                 case "8":
                     self.menu_quartos()
                 case "9":

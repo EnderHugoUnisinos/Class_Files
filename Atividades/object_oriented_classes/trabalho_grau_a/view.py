@@ -2,7 +2,7 @@ from utils import Utils
 import os
 class SystemView:
     def __init__(self) -> None:
-        self.utils = Utils()
+        pass
 
     def menu_principal(self):
         print("[1] : Consultar disponibilidade")
@@ -24,7 +24,7 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto que deseja consultar: ")
-            if not self.utils.validar_formato_numero_quarto(quarto_prevalid):
+            if not Utils().validar_formato_numero_quarto(quarto_prevalid):
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -32,7 +32,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira a data no padrão DD-MM-AAAA: ")
-            if not self.utils.validar_formato_data(data_prevalid):
+            if not Utils().validar_formato_data(data_prevalid):
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -54,22 +54,22 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto da reserva que deseja consultar: ")
-            if not self.utils.validar_formato_numero_quarto(quarto_prevalid) and quarto_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
+            if not Utils().validar_formato_numero_quarto(quarto_prevalid) and quarto_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
-        if quarto_prevalid.upper() == "X" or cliente_prevalid.strip() == "":
+        if quarto_prevalid.upper() == "X" or quarto_prevalid.strip() == "":
             user_input["quarto"] = None
         else:
             user_input["quarto"] = quarto_prevalid
         
         while True:
             data_prevalid = input("Insira a data da reserva que deseja consultar no padrão DD-MM-AAAA: ")
-            if not self.utils.validar_formato_data(data_prevalid) and data_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
+            if not Utils().validar_formato_data(data_prevalid) and data_prevalid.upper() != "X" and data_prevalid.strip() != "":
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
-        if data_prevalid.upper() == "X" or cliente_prevalid.strip() == "":
+        if data_prevalid.upper() == "X" or data_prevalid.strip() == "":
             user_input["data"] = None
         else:
             user_input["data"] = data_prevalid
@@ -82,7 +82,7 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto: ")
-            if not self.utils.validar_formato_numero_quarto(quarto_prevalid):
+            if not Utils().validar_formato_numero_quarto(quarto_prevalid):
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -90,7 +90,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira o dia de inicio no padrão DD-MM-AAAA: ")
-            if not self.utils.validar_formato_data(data_prevalid):
+            if not Utils().validar_formato_data(data_prevalid):
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -98,7 +98,7 @@ class SystemView:
         
         while True:
             data_prevalid = input("Insira o dia de inicio no padrão DD-MM-AAAA: ")
-            if not self.utils.validar_formato_data(data_prevalid):
+            if not Utils().validar_formato_data(data_prevalid):
                 self.error_message("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
@@ -127,7 +127,7 @@ class SystemView:
         raw_input = ""
         while raw_input != "X":
             raw_input = input("Insira o codigo dos produtos a registrar (um de cada vez), digite \"X\" para encerrar o registro:")
-            if raw_input != "X":
+            if raw_input != "X" and Utils().validar_formato_codigo_produto(raw_input) and raw_input.strip() != "":
                 user_input["consumo"].append(raw_input)
         return user_input
 
@@ -151,11 +151,24 @@ class SystemView:
         return user_input
     
     def display_produtos(self, produtos):
-        pass
+        for i in produtos:
+            print(f"{i}")
     
+    def display_reservas(self, reservas, produtos):
+        for i in reservas:
+            total = i.calcular_diaria()
+            for j in i.get_quarto().lista_consumo(produtos):
+                total += j.get_preco()
+            print(f"\nReserva\n{i}")
+            print(f"\nQuarto\n{i.get_quarto()}\n\nProdutos")
+            self.display_produtos(i.get_quarto().lista_consumo(produtos))
+            print(f"\nTotal: {total}")
+            print('─' * 50)
+
     def await_input(self):
         print("[Aperte ENTER para continuar]")
         input()
+        self.clear_console()
     
     def print_data(self, string):
         print(string)

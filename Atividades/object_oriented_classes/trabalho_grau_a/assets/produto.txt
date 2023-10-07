@@ -1,5 +1,5 @@
 001/Steak Dinner/19.99
 002/Minibar Drinks/34.95
-003/Toiletries Kit/12.50
+003/Toiletries Kit/12.5
 004/Coffee and Snacks/7.99
 005/Breakfast Buffet/22.75

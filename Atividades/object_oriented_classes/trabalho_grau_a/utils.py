@@ -25,7 +25,6 @@ class Utils:
                 overlap_found = True
             day += 1
         return overlap_found
-
     def validar_formato_data(self, string):
         try:
             split_string = string.split("-")
@@ -37,7 +36,6 @@ class Utils:
         except:
             validation_result = False
         return validation_result
-    
     def validar_formato_numero_quarto(self, string):
         try:
             numero = int(string)
@@ -48,3 +46,35 @@ class Utils:
         except:
             validation_result = False
         return validation_result
+    def validar_formato_codigo_produto(self, string):
+        try:
+            numero = int(string)
+            if numero > 0:
+                validation_result = True
+            else:
+                validation_result = False
+        except:
+            validation_result = False
+        return validation_result
+    def contar_dias(self, datas):
+        datas_separated = [datas[0].split("-"),datas[1].split("-")]
+        datas_separated = {"start": {"day": int(datas_separated[0][0]),"month": int(datas_separated[0][1]),"year" : int(datas_separated[0][2])}, "ending": {"day": int(datas_separated[1][0]),"month": int(datas_separated[1][1]),"year" : int(datas_separated[1][2])}}
+
+        day = datas_separated["start"]["day"]
+        month = datas_separated["start"]["month"]
+        year = datas_separated["start"]["year"]
+        
+        count = 0
+
+        while True:
+            if day > 31:
+                day = 0
+                month += 1
+            if month > 12:
+                month = 0
+                year += 1
+            if day == datas_separated["ending"]["day"] and month == datas_separated["ending"]["month"] and year == datas_separated["ending"]["year"]:
+                break
+            day += 1
+            count += 1
+        return count
