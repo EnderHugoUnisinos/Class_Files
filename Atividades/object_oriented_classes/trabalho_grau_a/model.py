@@ -1,5 +1,6 @@
 from pousada import Pousada
 from utils import Utils
+
 class SystemModel:
     def __init__(self, pousada_path, produto_path, quarto_path, reserva_path) -> None:
         self.pousada_path = pousada_path

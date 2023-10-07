@@ -57,7 +57,9 @@ class Pousada:
             dadosDict["quartos"].append(i.serializar())
 
         for i in self.get_reservas():
-            dadosDict["reservas"].append(i.serializar())
+            if i.get_status() not in ["O","C"]:
+                dadosDict["reservas"].append(i.serializar())
+            #skip to the next loop
 
         for i in self.get_produtos():
             dadosDict["produtos"].append(i.serializar())

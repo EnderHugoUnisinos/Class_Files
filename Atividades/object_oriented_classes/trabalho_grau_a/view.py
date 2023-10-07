@@ -75,7 +75,6 @@ class SystemView:
             user_input["data"] = data_prevalid
         
         return user_input
-
     def realizar_reserva(self):
         user_input = {"dia_inicio":"", "dia_fim":"","cliente":"","quarto":""}
         user_input["cliente"] = input("Insira o nome do cliente: ")
@@ -105,19 +104,15 @@ class SystemView:
         user_input["dia_fim"] = data_prevalid
         
         return user_input
-    
     def cancelar_reserva(self):
         user_input = input("Insira o nome do cliente da reserva que deseja cancelar: ")
         return user_input
-    
     def realizar_checkin(self):
         user_input = input("Insira o nome do cliente da reserva que deseja realizar check-in: ")
-        return user_input
-    
+        return user_input 
     def realizar_checkout(self):
         user_input = input("Insira o nome do cliente da reserva que deseja realizar check-out: ")
-        return user_input
-    
+        return user_input 
     def registrar_consumo(self, produtos):
         user_input = {"cliente":"","consumo":[]}
         
@@ -130,7 +125,7 @@ class SystemView:
             if raw_input != "X" and Utils().is_valid_product_code(raw_input) and raw_input.strip() != "":
                 user_input["consumo"].append(raw_input)
         return user_input
-
+    
     def menu_quartos(self):
         print("[1] : Adicionar quarto")
         print("[2] : Remover quarto")
@@ -153,7 +148,6 @@ class SystemView:
     def display_produtos(self, produtos):
         for i in produtos:
             print(f"{i}")
-    
     def display_reservas(self, reservas, produtos):
         for i in reservas:
             total = i.calcular_diaria()
@@ -175,9 +169,7 @@ class SystemView:
     
     def clear_console(self):
         os.system('cls')
-
     def error_message(self, erro, solucao):
         print("{} - {}".format(erro,solucao))
-    
     def success_message(self, success):
         print("{}".format(success))
