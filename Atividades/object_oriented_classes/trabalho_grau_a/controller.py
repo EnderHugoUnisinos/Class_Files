@@ -122,21 +122,22 @@ class SystemController:
                 case "4":
                     self.remover_multiplos_quartos()
                 case "5":
-                    self.listar_produtos()
+                    self.listar_quartos()
                 case default:
                     self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 5)")
             self.view.await_input()
 
     def adicionar_quarto(self):
-        pass
+        user_input = self.view.adicionar_quarto()
     def remover_quarto(self):
-        pass
+        user_input = self.view.remover_quarto()
     def adicionar_multiplos_quartos(self):
-        pass
+        user_input = self.view.adicionar_multiplos_quartos()
     def remover_multiplos_quartos(self):
-        pass
+        user_input = self.view.remover_multiplos_quartos()
     def listar_quartos(self):
-        pass
+        quartos = self.model.get_pousada().get_quartos()
+        self.view.display_quartos(quartos)
 
     def menu_produtos(self):
         while True:

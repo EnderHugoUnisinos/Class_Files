@@ -33,6 +33,19 @@ class Utils:
         except ValueError:
             return False
     @staticmethod
+    def is_valid_category(category):
+        if category in ["S","M","P"]:
+            return True
+        else:
+            return False
+    @staticmethod
+    def is_valid_price(price):
+        try:
+            price = int(price)
+            return price > 0
+        except ValueError:
+            return False
+    @staticmethod
     def count_days(date_range):
         start_date, end_date = date_range
         start_date = datetime.strptime(start_date, "%Y-%m-%d")

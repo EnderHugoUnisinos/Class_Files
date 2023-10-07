@@ -18,7 +18,6 @@ class SystemView:
         print("[0] : Sair")
         user_input = input("Insira a opção desejada: ")
         return user_input
-    
     def consultar_disponibilidade(self):
         user_input = {"data":"","quarto":""}
         
@@ -39,7 +38,6 @@ class SystemView:
         user_input["data"] = data_prevalid
         
         return user_input
-    
     def consultar_reserva(self):
         user_input = {"cliente":"","data":"","quarto":""}
         
@@ -135,7 +133,53 @@ class SystemView:
         print("[0] : Voltar ao menu principal")
         user_input = input("Insira a opção desejada: ")
         return user_input
-    
+    def adicionar_quarto(self):
+        user_input = {"numero":"","categoria":"","diaria":""}
+        raw_input = ""
+        while not Utils().is_valid_room_number(raw_input):
+            raw_input = input("Insira o numero do quarto:")
+        user_input["numero"] = raw_input
+        while not Utils().is_valid_category(raw_input):
+            raw_input = input("Insira a categoria do quarto:")
+        user_input["categoria"] = raw_input
+        while not Utils().is_valid_price(raw_input):
+            raw_input = input("Insira a diaria do quarto:")
+        user_input["diaria"] = raw_input
+
+        return user_input
+    def remover_quarto(self):
+        while not Utils().is_valid_room_number(raw_input):
+            raw_input = input("Insira o numero do quarto que deseja remover:")
+        user_input = raw_input
+        return user_input
+    def adicionar_multiplos_quartos(self):
+        raw_input = ""
+        print("Insira os dados no padrão seguinte: numero/categoria/diaria")
+        print("Ex: \"101/S/80\"")
+        self.await_input()
+        user_input = []
+        while raw_input.upper() != "X" and raw_input.strip() != "":
+            raw_input = input("Insira os dados do quarto, insira X para encerrar: ")
+            try:
+                numero, categoria, diaria = raw_input.split("/")
+                if Utils().is_valid_room_number(numero) and Utils().is_valid_category(categoria) and Utils.is_valid_price(diaria):
+                    user_input.append(raw_input)
+                else:
+                    self.error_message("Dados não puderam ser validados","Siga o padrão numero/categoria/diaria")
+            except:
+                self.error_message("Dados separados incorretamente", "Siga o padrão numero/categoria/diaria")
+        return user_input
+    def remover_multiplos_quartos(self):
+        raw_input = ""
+        user_input = []
+        while raw_input.upper() != "X" and raw_input.strip() != "":
+            raw_input = input("Insira o numero do quarto, insira X para encerrar: ")
+            if Utils().is_valid_room_number(raw_input):
+                user_input.append(int(raw_input))
+            else:
+                self.error_message("Não foi possivel validar o numero do quarto","Verifique o valor inserido")
+        return user_input
+
     def menu_produtos(self):
         print("[1] : Adicionar produto")
         print("[2] : Produto quarto")
@@ -144,10 +188,19 @@ class SystemView:
         print("[0] : Voltar ao menu principal")
         user_input = input("Insira a opção desejada: ")
         return user_input
+    def adicionar_produto(self):
+        pass
+    def remover_produto(self):
+        pass
+    def modificar_produto(self):
+        pass
+    def listar_produtos(self):
+        pass
     
     def display_produtos(self, produtos):
         for i in produtos:
             print(f"{i}")
+            print('─' * 50)
     def display_reservas(self, reservas, produtos):
         for i in reservas:
             total = i.calcular_diaria()
@@ -158,6 +211,9 @@ class SystemView:
             self.display_produtos(i.get_quarto().lista_consumo(produtos))
             print(f"\nTotal: {total}")
             print('─' * 50)
+    def display_quartos(self, quartos):
+        for i in quartos:
+            print(f"{i}")
 
     def await_input(self):
         print("[Aperte ENTER para continuar]")
