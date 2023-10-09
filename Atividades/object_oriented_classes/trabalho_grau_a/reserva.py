@@ -7,13 +7,17 @@ class Reserva:
         self.quarto = quarto
         self.status = status
     
-    def __str__(self):
+    def __str__(self) -> str:
         dias = self.contarDias()
         return f"Cliente: {self.getCliente()}, Dia de inicio: {self.getDatas()[0]}, Dia final: {self.getDatas()[1]}, Total de dias: {dias}, Status: {self.getStatus()}"
-    
     def __repr__(self):
         return f'Reserva({self.getDatas()[0]},{self.getDatas()[1]},{self.getCliente()},{self.getQuarto()},{self.getStatus()})'
     
+    #redundancy to follow the code schematics
+    def toString(self):
+        dias = self.contarDias()
+        return f"Cliente: {self.getCliente()}, Dia de inicio: {self.getDatas()[0]}, Dia final: {self.getDatas()[1]}, Total de dias: {dias}, Status: {self.getStatus()}"
+
     def getCliente(self):
         return self.cliente
     def getQuarto(self):
@@ -39,7 +43,7 @@ class Reserva:
     
     def calcularDiaria(self):
         dias = self.contarDias()
-        total = dias * self.getquarto().getDiaria()
+        total = dias * self.getQuarto().getDiaria()
         return total
 
     def serializar(self):

@@ -59,7 +59,7 @@ class SystemController:
         userInput = self.view.consultarReserva(quartos)
         result = self.model.consultarReserva(userInput["data"],userInput["cliente"],userInput["quarto"])
         self.view.clearConsole()
-        if result != None:
+        if result != []:
             self.view.displayReservas(result, produtos)
         else:
             self.view.errorMessage("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
@@ -71,11 +71,15 @@ class SystemController:
         self.view.clearConsole()
         #Testa se a consulta retornou algo
         if all(v is not None for v in [resultA, resultB]):
-            try:
+            #try:
+            reservaExistente = self.model.consultarReserva(None, userInput["cliente"], None)
+            if all(v.getStatus().upper() not in ["A","I"] for v in reservaExistente):
                 self.model.realizarReserva(userInput)
                 self.view.successMessage("Reserva realizada com sucesso")
-            except:
-                self.view.errorMessage("Ocorreu um erro ao inserir a reserva","Entre em contato com o desenvolvedor")
+            else:
+                self.view.errorMessage("Cliente já tem uma reserva ativa", "Certifique-se que o cliente realizou check-out/cancelou a reserva antiga")
+            #except:
+                #self.view.errorMessage("Ocorreu um erro ao inserir a reserva","Entre em contato com o desenvolvedor")
         else:
             self.view.printData("Quarto indisponivel.")     
     def cancelarReserva(self):

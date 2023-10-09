@@ -45,29 +45,29 @@ class SystemView:
         self.awaitInput()
         
         clientePrevalid = input("Insira o nome do cliente da reserva que deseja consultar: ")
-        if clientePrevalid.upper() == "X" or clientePrevalid.strip() == "":
+        if clientePrevalid.upper() == "X":
             userInput["cliente"] = None
         else:
             userInput["cliente"] = clientePrevalid
         
         while True:
             quartoPrevalid = input("Insira o numero do quarto da reserva que deseja consultar: ")
-            if not Utils().isValidRoomNumber(quartoPrevalid, quartos) and quartoPrevalid.upper() != "X" and clientePrevalid.strip() != "":
+            if not Utils().isValidRoomNumber(quartoPrevalid, quartos) and quartoPrevalid.upper() != "X":
                 self.errorMessage("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
-        if quartoPrevalid.upper() == "X" or quartoPrevalid.strip() == "":
+        if quartoPrevalid.upper() == "X":
             userInput["quarto"] = None
         else:
             userInput["quarto"] = quartoPrevalid
         
         while True:
             dataPrevalid = input("Insira a data da reserva que deseja consultar no padrão DD-MM-AAAA: ")
-            if not Utils().isValidDateFormat(dataPrevalid) and dataPrevalid.upper() != "X" and dataPrevalid.strip() != "":
+            if not Utils().isValidDateFormat(dataPrevalid) and dataPrevalid.upper() != "X":
                 self.errorMessage("Formato de data incorreto", "Insira uma data seguindo o padrão: DD-MM-AAAA")
             else:
                 break
-        if dataPrevalid.upper() == "X" or dataPrevalid.strip() == "":
+        if dataPrevalid.upper() == "X":
             userInput["data"] = None
         else:
             userInput["data"] = dataPrevalid

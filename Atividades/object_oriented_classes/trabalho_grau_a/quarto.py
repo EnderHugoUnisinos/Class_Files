@@ -7,11 +7,15 @@ class Quarto:
         #consumo provavelmente se encaixa melhor em reserva, mas vamos manter aqui de acordo com o diagrama
         self.consumo = consumo
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Numero: {self.getNumero()}, Categoria: {self.getCategoria()}, Diaria: {self.getDiaria()}'     
     def __repr__(self):
         return f'Quarto({self.getNumero()},{self.getCategoria()},{self.getDiaria()},{self.getConsumo()})'
     
+    #redundancy to follow the code schematics
+    def toString(self):
+        return f'Numero: {self.getNumero()}, Categoria: {self.getCategoria()}, Diaria: {self.getDiaria()}'
+
     def getNumero(self):
         return self.numero
     def getCategoria(self):

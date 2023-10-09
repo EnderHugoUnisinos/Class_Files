@@ -91,17 +91,17 @@ class Pousada:
         return dadosDict
 
     def consultaDisponibilidade(self, data, quarto):
-        quarto = None
+        quartoFound = None
         reservaCount = 0
         if self.getReservas() != []:
             for i in self.getReservas():
-                if i.getQuarto().getNumero() == quarto:
+                if int(i.getQuarto().getNumero()) == int(quarto):
                     reservaCount += 1
                     if not Utils().checkDateOverlap(i.getDatas(), data):
-                        quarto = i.getQuarto()
+                        quartoFound = i.getQuarto()
         if reservaCount == 0:
-            quarto = self.searchForQuarto(quarto)
-        return quarto
+            quartoFound = self.searchForQuarto(quarto)
+        return quartoFound
     def consultaReserva(self, data, cliente, quarto):
         reserva = []
         if self.getReservas()[0] != None:

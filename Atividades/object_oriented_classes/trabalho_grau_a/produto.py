@@ -6,6 +6,12 @@ class Produto:
 
     def __str__(self) -> str:
         return f"Codigo: {self.getCodigo()}, Nome: {self.getNome()}, Preço: {self.getPreco()}"
+    def __repr__(self) -> str:
+        return f'Produto({self.getCodigo()},{self.getNome()},{self.getPreco()})'
+    
+    #redundancy to follow the code schematics
+    def toString(self):
+        return f"Codigo: {self.getCodigo()}, Nome: {self.getNome()}, Preço: {self.getPreco()}"
 
     def getCodigo(self):
         return self.codigo
