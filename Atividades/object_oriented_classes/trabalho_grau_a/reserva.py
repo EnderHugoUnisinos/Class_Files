@@ -1,64 +1,64 @@
 from utils import Utils
 class Reserva:
-    def __init__ (self, dia_inicio = None, dia_fim = None, cliente = None, quarto = None, status = 'A'):
-        self.dia_inicio = dia_inicio
-        self.dia_fim = dia_fim
+    def __init__ (self, diaInicio = None, diaFim = None, cliente = None, quarto = None, status = 'A'):
+        self.diaInicio = diaInicio
+        self.diaFim = diaFim
         self.cliente = cliente
         self.quarto = quarto
         self.status = status
     
     def __str__(self):
-        dias = self.contar_dias()
-        return f"Cliente: {self.get_cliente()}, Dia de inicio: {self.get_datas()[0]}, Dia final: {self.get_datas()[1]}, Total de dias: {dias}, Status: {self.get_status()}"
+        dias = self.contarDias()
+        return f"Cliente: {self.getCliente()}, Dia de inicio: {self.getDatas()[0]}, Dia final: {self.getDatas()[1]}, Total de dias: {dias}, Status: {self.getStatus()}"
     
     def __repr__(self):
-        return f'Reserva({self.get_datas()[0]},{self.get_datas()[1]},{self.get_cliente()},{self.get_quarto()},{self.get_status()})'
+        return f'Reserva({self.getDatas()[0]},{self.getDatas()[1]},{self.getCliente()},{self.getQuarto()},{self.getStatus()})'
     
-    def get_cliente(self):
+    def getCliente(self):
         return self.cliente
-    def get_quarto(self):
+    def getQuarto(self):
         return self.quarto
-    def get_status(self):
+    def getStatus(self):
         return self.status
-    def get_datas(self):
-        data = [self.dia_inicio,self.dia_fim]
+    def getDatas(self):
+        data = [self.diaInicio,self.diaFim]
         return data
     
-    def set_cliente(self, cliente):
+    def setCliente(self, cliente):
         self.cliente = cliente
-    def set_quarto(self, quarto):
+    def setQuarto(self, quarto):
         self.quarto = quarto
-    def set_status(self, status):
+    def setStatus(self, status):
         self.status = status
-    def set_data(self, data):
-        self.dia_inicio = data[0]
-        self.dia_fim = data[1]
+    def setData(self, data):
+        self.diaInicio = data[0]
+        self.diaFim = data[1]
 
-    def contar_dias(self):
-        return Utils().count_days(self.get_datas())
+    def contarDias(self):
+        return Utils().countDays(self.getDatas())
     
-    def calcular_diaria(self):
-        dias = self.contar_dias()
-        total = dias * self.get_quarto().get_diaria()
+    def calcularDiaria(self):
+        dias = self.contarDias()
+        total = dias * self.getquarto().getDiaria()
         return total
 
     def serializar(self):
-        serialized_string = "{}/{}/{}/{}/{}".format(self.get_datas()[0], self.get_datas()[1], self.get_cliente(), self.get_quarto().get_numero(), self.get_status())
-        return serialized_string
+        serializedString = "{}/{}/{}/{}/{}".format(self.getDatas()[0], self.getDatas()[1], self.getCliente(), self.getQuarto().getNumero(), self.getStatus())
+        return serializedString
 
     def deserializar(self, string, quartos):
-        split_string = string.strip().split("/")
-        split_string[0] #dia inicio
-        split_string[1] #dia fim
-        split_string[2] #cliente
-        split_string[3] #numero do quarto
-        split_string[4] #status
+        splitString = string.strip().split("/")
+        splitString[0] #dia inicio
+        splitString[1] #dia fim
+        splitString[2] #cliente
+        splitString[3] #numero do quarto
+        splitString[4] #status
         
-        self.set_data([split_string[0], split_string[1]])
-        self.set_cliente(split_string[2])
+        self.setData([splitString[0], splitString[1]])
+        self.setCliente(splitString[2])
         for i in quartos:
-            if i.numero == split_string[3]:
-                self.set_quarto(i)
+            if i.numero == splitString[3]:
+                self.setQuarto(i)
                 break
-        self.set_status(split_string[4])
+        self.setStatus(splitString[4])
         return self

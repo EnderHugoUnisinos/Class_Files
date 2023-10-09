@@ -5,33 +5,33 @@ class Produto:
         self.preco = preco
 
     def __str__(self) -> str:
-        return f"Codigo: {self.get_codigo()}, Nome: {self.get_nome()}, Preço: {self.get_preco()}"
+        return f"Codigo: {self.getCodigo()}, Nome: {self.getNome()}, Preço: {self.getPreco()}"
 
-    def get_codigo(self):
+    def getCodigo(self):
         return self.codigo
-    def get_nome(self):
+    def getNome(self):
         return self.nome
-    def get_preco(self):
+    def getPreco(self):
         return self.preco
     
-    def set_codigo(self, codigo):
+    def setCodigo(self, codigo):
         self.codigo = codigo
-    def set_nome(self, nome):
+    def setNome(self, nome):
         self.nome = nome
-    def set_preco(self, preco):
+    def setPreco(self, preco):
         self.preco = preco
 
     def serializar(self):
-        serialized_string = "{}/{}/{}".format(self.get_codigo(),self.get_nome(),self.get_preco())
-        return serialized_string
+        serializedString = "{}/{}/{}".format(self.getCodigo(),self.getNome(),self.getPreco())
+        return serializedString
 
     def deserializar(self, string):
-        split_string = string.strip().split("/")
-        split_string[0] #codigo
-        split_string[1] #nome
-        split_string[2] #preco
+        splitString = string.strip().split("/")
+        splitString[0] #codigo
+        splitString[1] #nome
+        splitString[2] #preco
         
-        self.set_codigo(split_string[0])
-        self.set_nome(split_string[1])
-        self.set_preco(float(split_string[2].strip()))
+        self.setCodigo(splitString[0])
+        self.setNome(splitString[1])
+        self.setPreco(float(splitString[2].strip()))
         return self

@@ -2,94 +2,94 @@ from pousada import Pousada
 from utils import Utils
 
 class SystemModel:
-    def __init__(self, pousada_path, produto_path, quarto_path, reserva_path) -> None:
-        self.pousada_path = pousada_path
-        self.produto_path = produto_path
-        self.quarto_path = quarto_path
-        self.reserva_path = reserva_path
+    def __init__(self, pousadaPath, produtoPath, quartoPath, reservaPath) -> None:
+        self.pousadaPath = pousadaPath
+        self.produtoPath = produtoPath
+        self.quartoPath = quartoPath
+        self.reservaPath = reservaPath
         self.pousada = Pousada()
     
-    def get_paths(self):
-        return [self.pousada_path, self.produto_path, self.quarto_path, self.reserva_path]
-    def get_pousada(self):
+    def getPaths(self):
+        return [self.pousadaPath, self.produtoPath, self.quartoPath, self.reservaPath]
+    def getPousada(self):
         return self.pousada
 
-    def salvar_dados(self):
-        dadosDict = self.pousada.salvar_dados()
-        paths = self.get_paths()
-        self.write_to_file(dadosDict["pousada"], paths[0])
-        self.write_to_file(dadosDict["produtos"], paths[1])
-        self.write_to_file(dadosDict["quartos"], paths[2])
-        self.write_to_file(dadosDict["reservas"], paths[3])
-    def carregar_dados(self):
-        paths = self.get_paths()
-        pousadaString = self.read_from_file(paths[0])
-        produtoStrings = self.read_from_file(paths[1])
-        quartoStrings = self.read_from_file(paths[2])
-        reservaStrings = self.read_from_file(paths[3])
-        self.get_pousada().carregar_dados(pousadaString, quartoStrings, reservaStrings, produtoStrings)
+    def salvarDados(self):
+        dadosDict = self.pousada.salvaDados()
+        paths = self.getPaths()
+        self.writeToFile(dadosDict["pousada"], paths[0])
+        self.writeToFile(dadosDict["produtos"], paths[1])
+        self.writeToFile(dadosDict["quartos"], paths[2])
+        self.writeToFile(dadosDict["reservas"], paths[3])
+    def carregarDados(self):
+        paths = self.getPaths()
+        pousadaString = self.readFromFile(paths[0])
+        produtoStrings = self.readFromFile(paths[1])
+        quartoStrings = self.readFromFile(paths[2])
+        reservaStrings = self.readFromFile(paths[3])
+        self.getPousada().carregaDados(pousadaString, quartoStrings, reservaStrings, produtoStrings)
     
-    def realizar_check_in(self, reservas):
-        self.get_pousada().realizar_check_in(reservas)
-    def realizar_check_out(self, reservas):
-        return self.get_pousada().realizar_check_out(reservas)
-    def search_for_reservas(self, cliente):
-        return self.get_pousada().search_for_reservas(cliente)
-    def cancelar_reserva(self, cliente):
-        self.get_pousada().cancela_reserva(cliente)
-    def realizar_reserva(self, dados):
-        self.get_pousada().realiza_reserva(dados["dia_inicio"],dados["dia_fim"],dados["cliente"],self.get_pousada().search_for_quarto(dados["quarto"]))
-    def consultar_disponibilidade(self, data, quarto):
-        return self.get_pousada().consulta_disponibilidade(data, quarto)   
-    def consultar_reserva(self, data, cliente, quarto):
-        return self.get_pousada().consulta_reserva(data, cliente, quarto)
+    def realizarCheckIn(self, reservas):
+        self.getPousada().realizarCheckIn(reservas)
+    def realizarCheckOut(self, reservas):
+        return self.getPousada().realizarCheckOut(reservas)
+    def searchForReservas(self, cliente):
+        return self.getPousada().searchForReservas(cliente)
+    def cancelarReserva(self, cliente):
+        self.getPousada().cancelaReserva(cliente)
+    def realizarReserva(self, dados):
+        self.getPousada().realizaReserva(dados["diaInicio"],dados["diaFim"],dados["cliente"],self.getPousada().searchForQuarto(dados["quarto"]))
+    def consultarDisponibilidade(self, data, quarto):
+        return self.getPousada().consultaDisponibilidade(data, quarto)   
+    def consultarReserva(self, data, cliente, quarto):
+        return self.getPousada().consultaReserva(data, cliente, quarto)
 
-    def adicionar_quarto(self, quarto):
-        self.pousada.adicionar_quarto(quarto)
-    def remover_quarto(self, numero):
-        self.pousada.remover_quarto(numero)
-    def adicionar_multiplos_quartos(self, lista):
+    def adicionarQuarto(self, quarto):
+        self.pousada.adicionarQuarto(quarto)
+    def removerQuarto(self, numero):
+        self.pousada.removerQuarto(numero)
+    def adicionarMultiplosQuartos(self, lista):
         for i in lista:
-            self.pousada.adicionar_quarto(i)
-    def remover_multiplos_quartos(self, lista):
+            self.pousada.adicionarQuarto(i)
+    def removerMultiplosQuartos(self, lista):
         for i in lista:
-            self.pousada.remover_quarto(i)
+            self.pousada.removerQuarto(i)
 
-    def adicionar_produto(self, produto):
-        self.pousada.adicionar_produto(produto)
-    def remover_produto(self, produto):
-        self.pousada.remover_produto(produto)
-    def adicionar_multiplos_produtos(self, lista):
+    def adicionarProduto(self, produto):
+        self.pousada.adicionarProduto(produto)
+    def removerProduto(self, produto):
+        self.pousada.removerProduto(produto)
+    def adicionarMultiplosProdutos(self, lista):
         for i in lista:
-            self.pousada.adicionar_produto(i)
-    def remover_multiplos_produtos(self, lista):
+            self.pousada.adicionarProduto(i)
+    def removerMultiplosProdutos(self, lista):
         for i in lista:
-            self.pousada.remover_produto(i)
+            self.pousada.removerProduto(i)
 
-    def registrar_consumo(self, cliente, consumo):
+    def registrarConsumo(self, cliente, consumo):
         modified = 0
-        for i in self.search_for_reservas(cliente):
-            quarto = i.get_quarto()
+        for i in self.searchForReservas(cliente):
+            quarto = i.getQuarto()
             for j in consumo:
-                quarto.adiciona_consumo(j)
+                quarto.adicionaConsumo(j)
                 modified += 1
         return modified
     
-    def get_produtos(self):
-        produtos = self.get_pousada().get_produtos()
+    def getProdutos(self):
+        produtos = self.getPousada().getProdutos()
         return produtos
-    def get_quartos(self):
-        quartos = self.get_pousada().get_quartos()
+    def getQuartos(self):
+        quartos = self.getPousada().getQuartos()
         return quartos
 
-    def write_to_file(self, string_list, path):
+    def writeToFile(self, stringList, path):
         try:
             with open(path, "w") as file:
-                file.writelines(line + "\n" for line in string_list)
+                file.writelines(line + "\n" for line in stringList)
             return True
         except: 
             return False   
-    def read_from_file(self, path):
+    def readFromFile(self, path):
         try:
             with open(path, "r") as file:
                 string = file.readlines()
@@ -97,5 +97,5 @@ class SystemModel:
         except:
             return False
 
-    def organizar_listas(self):
-        self.get_pousada().organizar_listas()
+    def organizarListas(self):
+        self.getPousada().organizarListas()

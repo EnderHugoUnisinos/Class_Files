@@ -5,190 +5,203 @@ from utils import Utils
 class SystemController:
     def __init__(self) -> None:
         self.view = SystemView()
-        self.model=  SystemModel("assets/pousada.txt","assets/produto.txt","assets/quarto.txt","assets/reserva.txt")
-        self.model.carregar_dados()
+        self.model= SystemModel("assets/pousada.txt","assets/produto.txt","assets/quarto.txt","assets/reserva.txt")
+        self.model.carregarDados()
 
-    def menu_principal(self):
+    def menuPrincipal(self):
         while True:
-            user_input = self.view.menu_principal()
-            match user_input:
+            userInput = self.view.menuPrincipal()
+            match userInput:
                 case "0":
-                    quit()
+                    self.sairSistema()
                 case "1":
-                    self.consultar_disponibilidade()
+                    self.consultarDisponibilidade()
                 case "2":
-                    self.consultar_reserva()
+                    self.consultarReserva()
                 case "3":
-                    self.realizar_reserva()          
+                    self.realizarReserva()          
                 case "4":
-                    self.cancelar_reserva()
+                    self.cancelarReserva()
                 case "5":
-                    self.realizar_check_in()
+                    self.realizarCheckIn()
                 case "6":
-                    self.realizar_check_out()
+                    self.realizarCheckOut()
                 case "7":
-                    self.registrar_consumo()
+                    self.registrarConsumo()
                 case "8":
-                    self.view.clear_console()
-                    self.menu_quartos()
+                    self.view.clearConsole()
+                    self.menuQuartos()
                 case "9":
-                    self.view.clear_console()
-                    self.menu_produtos()
+                    self.view.clearConsole()
+                    self.menuProdutos()
                 case "10":
-                    self.model.salvar_dados()
+                    self.salvarDados()
                 case default:
-                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 9)")
-            self.view.await_input()
-            self.organizar_listas()
+                    self.view.errorMessage("Numero inserido invalido","Insira um numero presente no menu (0 - 9)")
+            self.view.awaitInput()
+            self.organizarListas()
         
-    def consultar_disponibilidade(self):
-        user_input = self.view.consultar_disponibilidade()
-        result = self.model.consultar_disponibilidade(user_input["data"], user_input["quarto"])
-        self.view.clear_console()
+    def sairSistema(self):
+        self.salvarDados()
+        quit()
+    def consultarDisponibilidade(self):
+        userInput = self.view.consultarDisponibilidade()
+        result = self.model.consultarDisponibilidade(userInput["data"], userInput["quarto"])
+        self.view.clearConsole()
         #Testa se a consulta retornou algo
         if result != None:
-            self.view.print_data(str(result))
+            self.view.printData(str(result))
         else:
-            self.view.print_data("Quarto indisponivel.")
-    def consultar_reserva(self):
-        produtos = self.model.get_produtos()
-        quartos = self.model.get_quartos()
-        user_input = self.view.consultar_reserva(quartos)
-        result = self.model.consultar_reserva(user_input["data"],user_input["cliente"],user_input["quarto"])
-        self.view.clear_console()
+            self.view.printData("Quarto indisponivel.")
+    def consultarReserva(self):
+        produtos = self.model.getProdutos()
+        quartos = self.model.getQuartos()
+        userInput = self.view.consultarReserva(quartos)
+        result = self.model.consultarReserva(userInput["data"],userInput["cliente"],userInput["quarto"])
+        self.view.clearConsole()
         if result != None:
-            self.view.display_reservas(result, produtos)
+            self.view.displayReservas(result, produtos)
         else:
-            self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
-    def realizar_reserva(self):
-        user_input = self.view.realizar_reserva()
-        result_a = self.model.consultar_disponibilidade(user_input["dia_inicio"], user_input["quarto"])
-        result_b = self.model.consultar_disponibilidade(user_input["dia_fim"], user_input["quarto"])
-        self.view.clear_console()
+            self.view.errorMessage("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
+    def realizarReserva(self):
+        quartos = self.model.getQuartos()
+        userInput = self.view.realizarReserva(quartos)
+        resultA = self.model.consultarDisponibilidade(userInput["diaInicio"], userInput["quarto"])
+        resultB = self.model.consultarDisponibilidade(userInput["diaFim"], userInput["quarto"])
+        self.view.clearConsole()
         #Testa se a consulta retornou algo
-        if all(v is None for v in [result_a, result_b]):
+        if all(v is not None for v in [resultA, resultB]):
             try:
-                self.model.realizar_reserva(user_input)
-                self.view.success_message("Reserva realizada com sucesso")
+                self.model.realizarReserva(userInput)
+                self.view.successMessage("Reserva realizada com sucesso")
             except:
-                self.view.error_message("Ocorreu um erro ao inserir a reserva","Entre em contato com o desenvolvedor")
+                self.view.errorMessage("Ocorreu um erro ao inserir a reserva","Entre em contato com o desenvolvedor")
         else:
-            self.view.print_data("Quarto indisponivel.")     
-    def cancelar_reserva(self):
-        user_input = self.view.cancelar_reserva()
-        result = self.model.consultar_reserva(None, user_input, None)
-        self.view.clear_console()
+            self.view.printData("Quarto indisponivel.")     
+    def cancelarReserva(self):
+        userInput = self.view.cancelarReserva()
+        result = self.model.consultarReserva(None, userInput, None)
+        self.view.clearConsole()
         #Testa se a consulta retornou algo
         if result[0] != None:
             try:
-                self.model.cancelar_reserva(user_input)
-                self.view.success_message("Reserva cancelada com sucesso")
+                self.model.cancelarReserva(userInput)
+                self.view.successMessage("Reserva cancelada com sucesso")
             except:
-                self.view.error_message("Ocorreu um erro ao cancelar a reserva","Entre em contato com o desenvolvedor")
+                self.view.errorMessage("Ocorreu um erro ao cancelar a reserva","Entre em contato com o desenvolvedor")
         else:
-            self.view.print_data("Nenhuma reserva encontrada.")  
-    def realizar_check_in(self):
-        produtos = self.model.get_produtos()
-        user_input = self.view.realizar_checkin()
-        result = self.model.search_for_reservas(user_input)
-        self.view.clear_console()
+            self.view.printData("Nenhuma reserva encontrada.")  
+    def realizarCheckIn(self):
+        produtos = self.model.getProdutos()
+        userInput = self.view.realizarCheckin()
+        result = self.model.searchForReservas(userInput)
+        self.view.clearConsole()
         if result != None:
-            self.view.display_reservas(result, produtos)
-            self.model.realizar_check_in(result)
+            self.view.displayReservas(result, produtos)
+            self.model.realizarCheckIn(result)
         else: 
-            self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
-    def realizar_check_out(self):
-        produtos = self.model.get_produtos()
-        user_input = self.view.realizar_checkout()
-        result = self.model.search_for_reservas(user_input)
-        self.view.clear_console()
+            self.view.errorMessage("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
+    def realizarCheckOut(self):
+        produtos = self.model.getProdutos()
+        userInput = self.view.realizarCheckout()
+        result = self.model.searchForReservas(userInput)
+        self.view.clearConsole()
         if result != None:
-            self.view.display_reservas(result, produtos)
-            self.model.realizar_check_out(result)
+            self.view.displayReservas(result, produtos)
+            self.model.realizarCheckOut(result)
         else:
-            self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
-    def registrar_consumo(self):
-        produtos = self.model.get_produtos()
-        user_input = self.view.registrar_consumo(produtos)
-        self.model.registrar_consumo(user_input["cliente"],user_input["consumo"])
-
-    def menu_quartos(self):
+            self.view.errorMessage("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
+    def registrarConsumo(self):
+        produtos = self.model.getProdutos()
+        userInput = self.view.registrarConsumo(produtos)
+        self.model.registrarConsumo(userInput["cliente"],userInput["consumo"])
+    def salvarDados(self):
+        self.model.salvarDados()
+        self.model.carregarDados()
+    def menuQuartos(self):
         while True:
-            user_input = self.view.menu_quartos()
-            match user_input:
+            userInput = self.view.menuQuartos()
+            match userInput:
                 case "0":
                     break
                 case "1":
-                    self.adicionar_quarto()
+                    self.adicionarQuarto()
                 case "2":
-                    self.remover_quarto()
+                    self.removerQuarto()
                 case "3":
-                    self.adicionar_multiplos_quartos()
+                    self.adicionarMultiplosQuartos()
                 case "4":
-                    self.remover_multiplos_quartos()
+                    self.removerMultiplosQuartos()
                 case "5":
-                    self.listar_quartos()
+                    self.listarQuartos()
                 case default:
-                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 5)")
-            self.view.await_input()
-            self.organizar_listas()
+                    self.view.errorMessage("Numero inserido invalido","Insira um numero presente no menu (0 - 5)")
+            self.view.awaitInput()
+            self.organizarListas()
 
-    def adicionar_quarto(self):
-        quartos = self.model.get_quartos()
-        user_input = self.view.adicionar_quarto(quartos)
-        self.model.adicionar_quarto(user_input)
-    def remover_quarto(self):
-        quartos = self.model.get_quartos()
-        user_input = self.view.remover_quarto(quartos)
-        self.model.remover_quarto(user_input)
-    def adicionar_multiplos_quartos(self):
-        quartos = self.model.get_quartos()
-        user_input_list = self.view.adicionar_multiplos_quartos(quartos)
-        self.model.adicionar_multiplos_quartos(user_input_list)
-    def remover_multiplos_quartos(self):
-        quartos = self.model.get_quartos()
-        user_input_list = self.view.remover_multiplos_quartos(quartos)
-        self.model.remover_multiplos_quartos(user_input_list)
-    def listar_quartos(self):
-        quartos = self.model.get_quartos()
-        self.view.display_quartos(quartos)
+    def adicionarQuarto(self):
+        quartos = self.model.getQuartos()
+        userInput = self.view.adicionarQuarto(quartos)
+        self.model.adicionarQuarto(userInput)
+    def removerQuarto(self):
+        quartos = self.model.getQuartos()
+        userInput = self.view.removerQuarto(quartos)
+        result = self.model.consultarReserva(None, None, userInput)
+        if result == None:
+            self.model.removerQuarto(userInput)
+        else:
+            self.view.errorMessage("Quarto inserido está reservado","Cancele a reserva antes de remover")
+    def adicionarMultiplosQuartos(self):
+        quartos = self.model.getQuartos()
+        userInputList = self.view.adicionarMultiplosQuartos(quartos)
+        self.model.adicionarMultiplosQuartos(userInputList)
+    def removerMultiplosQuartos(self):
+        quartos = self.model.getQuartos()
+        userInputList = self.view.removerMultiplosQuartos(quartos)
+        if all(v is None for v in userInputList):
+            self.model.removerMultiplosQuartos(userInputList)
+        else:
+            self.view.errorMessage("Um dos quartos inseridos está reservado","Cancele a reserva antes de remover")
+    def listarQuartos(self):
+        quartos = self.model.getQuartos()
+        self.view.displayQuartos(quartos)
 
-    def menu_produtos(self):
+    def menuProdutos(self):
         while True:
-            user_input = self.view.menu_produtos()
-            match user_input:
+            userInput = self.view.menuProdutos()
+            match userInput:
                 case "0":
                     break
                 case "1":
-                    self.adicionar_produto()
+                    self.adicionarProduto()
                 case "2":
-                    self.remover_produto()
+                    self.removerProduto()
                 case "3":
-                    self.listar_produtos()
+                    self.listarProdutos()
                 case default:
-                    self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 4)")
-            self.view.await_input()
-            self.organizar_listas()
+                    self.view.errorMessage("Numero inserido invalido","Insira um numero presente no menu (0 - 4)")
+            self.view.awaitInput()
+            self.organizarListas()
         
-    def adicionar_produto(self):
-        produtos = self.model.get_produtos()
-        user_input = self.view.adicionar_produto(produtos)
-        self.model.adicionar_produto(user_input)
-    def remover_produto(self):
-        produtos = self.model.get_produtos()
-        user_input = self.view.remover_produto(produtos)
-        self.model.remover_produto(user_input)
-    def adicionar_multiplos_produtos(self):
-        produtos = self.model.get_produtos()
-        user_input_list = self.view.adicionar_multiplos_produtos(produtos)
-        self.model.adicionar_multiplos_produtos(user_input_list)
-    def remover_multiplos_produtos(self):
-        produtos = self.model.get_produtos()
-        user_input_list = self.view.remover_multiplos_produtos(produtos)
-        self.model.remover_multiplos_produtos(user_input_list)
-    def listar_produtos(self):
-        produtos = self.model.get_produtos()
-        self.view.display_produtos(produtos)
+    def adicionarProduto(self):
+        produtos = self.model.getProdutos()
+        userInput = self.view.adicionarProduto(produtos)
+        self.model.adicionarProduto(userInput)
+    def removerProduto(self):
+        produtos = self.model.getProdutos()
+        userInput = self.view.removerProduto(produtos)
+        self.model.removerProduto(userInput)
+    def adicionarMultiplosProdutos(self):
+        produtos = self.model.getProdutos()
+        userInputList = self.view.adicionarMultiplosProdutos(produtos)
+        self.model.adicionarMultiplosProdutos(userInputList)
+    def removerMultiplosProdutos(self):
+        produtos = self.model.getProdutos()
+        userInputList = self.view.removerMultiplosProdutos(produtos)
+        self.model.removerMultiplosProdutos(userInputList)
+    def listarProdutos(self):
+        produtos = self.model.getProdutos()
+        self.view.displayProdutos(produtos)
 
-    def organizar_listas(self):
-        self.model.organizar_listas()
+    def organizarListas(self):
+        self.model.organizarListas()

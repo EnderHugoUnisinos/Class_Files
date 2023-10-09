@@ -8,69 +8,69 @@ class Quarto:
         self.consumo = consumo
     
     def __str__(self):
-        return f'Numero: {self.get_numero()}, Categoria: {self.get_categoria()}, Diaria: {self.get_diaria()}'     
+        return f'Numero: {self.getNumero()}, Categoria: {self.getCategoria()}, Diaria: {self.getDiaria()}'     
     def __repr__(self):
-        return f'Quarto({self.get_numero()},{self.get_categoria()},{self.get_diaria()},{self.get_consumo()})'
+        return f'Quarto({self.getNumero()},{self.getCategoria()},{self.getDiaria()},{self.getConsumo()})'
     
-    def get_numero(self):
+    def getNumero(self):
         return self.numero
-    def get_categoria(self):
+    def getCategoria(self):
         return self.categoria
-    def get_diaria(self):
+    def getDiaria(self):
         return self.diaria
-    def get_consumo(self):
+    def getConsumo(self):
         return self.consumo
     
-    def set_numero(self, numero):
+    def setNumero(self, numero):
         self.numero = numero
-    def set_categoria(self, categoria):
+    def setCategoria(self, categoria):
         self.categoria = categoria
-    def set_diaria(self, diaria):
+    def setDiaria(self, diaria):
         self.diaria = diaria
-    def set_consumo(self, consumo):
+    def setConsumo(self, consumo):
         self.consumo = consumo
 
-    def adiciona_consumo(self, codigo):
+    def adicionaConsumo(self, codigo):
         self.consumo.append(codigo)
-    def lista_consumo(self, produtos):
-        lista_consumo = []
-        for i in self.get_consumo():
+    def listaConsumo(self, produtos):
+        listaConsumo = []
+        for i in self.getConsumo():
             for j in produtos:
-                if j.get_codigo() == i:
-                    lista_consumo.append(j)
-        return lista_consumo
-    def valor_total_consumo(self, produtos):
-        total_value = 0
-        for i in self.get_consumo():
+                if j.getCodigo() == i:
+                    listaConsumo.append(j)
+        return listaConsumo
+    def valorTotalConsumo(self, produtos):
+        totalValue = 0
+        for i in self.getConsumo():
             for j in produtos:
-                if j.get_codigo() == i:
-                    total_value += j.get_preco()
+                if j.getCodigo() == i:
+                    totalValue += j.getPreco()
         
-        return total_value
-    def limpa_consumo(self):
-        self.set_consumo([])
+        return totalValue
+    def limpaConsumo(self):
+        self.setConsumo([])
 
     def serializar(self):
-        consumo_string = ""
-        for j in self.get_consumo():
-            consumo_string = "{}{}:".format(consumo_string, j)
-        consumo_string = consumo_string[:-1]
-        serialized_string = "{}/{}/{}/{}".format(self.get_numero(),self.get_categoria(),self.get_diaria(),consumo_string)
+        consumoString = ""
+        for j in self.getConsumo():
+            consumoString = "{}{}:".format(consumoString, j)
+        consumoString = consumoString[:-1]
+        serializedString = "{}/{}/{}/{}".format(self.getNumero(),self.getCategoria(),self.getDiaria(),consumoString)
         
-        return serialized_string
+        return serializedString
     def deserializar(self, string):
-        split_string = string.strip().split("/")
-        split_string[0] #numero
-        split_string[1] #categoria
-        split_string[2] #diaria
+        splitString = string.strip().split("/")
+        splitString[0] #numero
+        splitString[1] #categoria
+        splitString[2] #diaria
         try:
-            split_string[3] #consumo
+            splitString[3] #consumo
         except:
-            split_string.append("") 
-        self.set_numero(split_string[0])
-        self.set_categoria(split_string[1])
-        self.set_diaria(float(split_string[2]))
-        consumoString = split_string[3]
-        self.set_consumo(consumoString.strip().split(":"))
+            splitString.append("") 
+        self.setNumero(splitString[0])
+        self.setCategoria(splitString[1])
+        self.setDiaria(float(splitString[2]))
+        consumoString = splitString[3]
+        self.setConsumo(consumoString.strip().split(":"))
 
         return self
