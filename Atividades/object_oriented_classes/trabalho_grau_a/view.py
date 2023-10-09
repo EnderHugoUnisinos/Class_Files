@@ -18,12 +18,12 @@ class SystemView:
         print("[0] : Sair")
         user_input = input("Insira a opção desejada: ")
         return user_input
-    def consultar_disponibilidade(self):
+    def consultar_disponibilidade(self, quartos):
         user_input = {"data":"","quarto":""}
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto que deseja consultar: ")
-            if not Utils().is_valid_room_number(quarto_prevalid):
+            if not Utils().is_valid_room_number(quarto_prevalid, quartos):
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -38,7 +38,7 @@ class SystemView:
         user_input["data"] = data_prevalid
         
         return user_input
-    def consultar_reserva(self):
+    def consultar_reserva(self, quartos):
         user_input = {"cliente":"","data":"","quarto":""}
         
         print("Para cada campo insira os parametros pedidos ou insira \"X\" para não utilizar o parametro")
@@ -52,7 +52,7 @@ class SystemView:
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto da reserva que deseja consultar: ")
-            if not Utils().is_valid_room_number(quarto_prevalid) and quarto_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
+            if not Utils().is_valid_room_number(quarto_prevalid, quartos) and quarto_prevalid.upper() != "X" and cliente_prevalid.strip() != "":
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -73,13 +73,13 @@ class SystemView:
             user_input["data"] = data_prevalid
         
         return user_input
-    def realizar_reserva(self):
+    def realizar_reserva(self, quartos):
         user_input = {"dia_inicio":"", "dia_fim":"","cliente":"","quarto":""}
         user_input["cliente"] = input("Insira o nome do cliente: ")
         
         while True:
             quarto_prevalid = input("Insira o numero do quarto: ")
-            if not Utils().is_valid_room_number(quarto_prevalid):
+            if not Utils().is_valid_room_number(quarto_prevalid, quartos):
                 self.error_message("Formato de numero incorreto", "Insira um numero de quarto seguindo o padrão: 101, 102, 201...")
             else:
                 break
@@ -133,74 +133,122 @@ class SystemView:
         print("[0] : Voltar ao menu principal")
         user_input = input("Insira a opção desejada: ")
         return user_input
-    def adicionar_quarto(self):
+    def adicionar_quarto(self, quartos):
         user_input = {"numero":"","categoria":"","diaria":""}
         raw_input = ""
-        while not Utils().is_valid_room_number(raw_input):
+        while not Utils().is_valid_number_format(raw_input) or Utils.is_valid_room_number(raw_input, quartos):
             raw_input = input("Insira o numero do quarto:")
+            self.error_message("Quarto inserido invalido","Verifique se o quarto já existe")
         user_input["numero"] = raw_input
         while not Utils().is_valid_category(raw_input):
-            raw_input = input("Insira a categoria do quarto:")
+            raw_input = input("Insira a categoria do quarto (S/M/P):")
+            self.error_message("Categoria inserida invalida","Verifique se a categoria existe (S/M/P)")
         user_input["categoria"] = raw_input
         while not Utils().is_valid_price(raw_input):
             raw_input = input("Insira a diaria do quarto:")
+            self.error_message("Valor inserido invalido","Verifique se o que foi inserido é um valor numerico valido")
         user_input["diaria"] = raw_input
-
+        user_input = f"{user_input['numero']}/{user_input['categoria']}/{user_input['diaria']}"
         return user_input
-    def remover_quarto(self):
-        while not Utils().is_valid_room_number(raw_input):
+    def remover_quarto(self, quartos):
+        raw_input = ""
+        while not Utils().is_valid_room_number(raw_input, quartos):
             raw_input = input("Insira o numero do quarto que deseja remover:")
         user_input = raw_input
         return user_input
-    def adicionar_multiplos_quartos(self):
-        raw_input = ""
+    def adicionar_multiplos_quartos(self, quartos):
+        raw_input = "None"
         print("Insira os dados no padrão seguinte: numero/categoria/diaria")
         print("Ex: \"101/S/80\"")
         self.await_input()
         user_input = []
-        while raw_input.upper() != "X" and raw_input.strip() != "":
+        while raw_input.upper() != "X":
             raw_input = input("Insira os dados do quarto, insira X para encerrar: ")
             try:
                 numero, categoria, diaria = raw_input.split("/")
-                if Utils().is_valid_room_number(numero) and Utils().is_valid_category(categoria) and Utils.is_valid_price(diaria):
+                if Utils().is_valid_number_format(numero) and not Utils.is_valid_room_number(quartos) and Utils().is_valid_category(categoria) and Utils.is_valid_price(diaria):
                     user_input.append(raw_input)
-                else:
+                elif raw_input.upper() != "X":
                     self.error_message("Dados não puderam ser validados","Siga o padrão numero/categoria/diaria")
             except:
                 self.error_message("Dados separados incorretamente", "Siga o padrão numero/categoria/diaria")
         return user_input
-    def remover_multiplos_quartos(self):
+    def remover_multiplos_quartos(self, quartos):
         raw_input = ""
         user_input = []
-        while raw_input.upper() != "X" and raw_input.strip() != "":
+        while raw_input.upper() != "X":
             raw_input = input("Insira o numero do quarto, insira X para encerrar: ")
-            if Utils().is_valid_room_number(raw_input):
+            if Utils().is_valid_room_number(raw_input, quartos):
                 user_input.append(int(raw_input))
-            else:
+            elif raw_input.upper() != "X":
                 self.error_message("Não foi possivel validar o numero do quarto","Verifique o valor inserido")
         return user_input
 
     def menu_produtos(self):
         print("[1] : Adicionar produto")
-        print("[2] : Produto quarto")
-        print("[3] : Modificar produto")
-        print("[4] : Listar produtos")
+        print("[2] : Remover produto")
+        print("[3] : Adicionar multiplos produtos")
+        print("[4] : Remover multiplos produtos")
+        print("[5] : Listar produtos")
         print("[0] : Voltar ao menu principal")
         user_input = input("Insira a opção desejada: ")
         return user_input
-    def adicionar_produto(self):
-        pass
-    def remover_produto(self):
-        pass
-    def modificar_produto(self):
-        pass
-    def listar_produtos(self):
-        pass
+    def adicionar_produto(self, produtos):
+        user_input = {"codigo":"","nome":"","preco":""}
+        raw_input = ""
+
+        while not Utils().is_valid_code_format(raw_input) or Utils.is_valid_product_code(raw_input, produtos):
+            raw_input = input("Insira o codigo do produto:")
+            self.error_message("codigo inserido invalido","Verifique se o produto já existe")
+        user_input["codigo"] = raw_input
+
+        raw_input = input("Insira o nome do produto:")
+        user_input["nome"] = raw_input
+
+        while not Utils().is_valid_price(raw_input):
+            raw_input = input("Insira o preco do quarto:")
+            self.error_message("Valor inserido invalido","Verifique se o que foi inserido é um valor numerico valido")
+        user_input["preco"] = raw_input
+        user_input = f"{user_input['codigo']}/{user_input['nome']}/{user_input['preco']}"
+        return user_input
+    def remover_produto(self, produtos):
+        raw_input = ""
+        while not Utils().is_valid_product_code(raw_input, produtos) and raw_input != "000":
+            raw_input = input("Insira o codigo do produto que deseja remover:")
+        user_input = raw_input
+        return user_input
+    def adicionar_multiplos_produtos(self, produtos):
+        raw_input = "None"
+        print("Insira os dados no padrão seguinte: codigo/nome/preço")
+        print("Ex: \"001/Jantar de Bife/49.99\"")
+        self.await_input()
+        user_input = []
+        while raw_input.upper() != "X":
+            raw_input = input("Insira os dados do produto, insira X para encerrar: ")
+            try:
+                codigo, nome, preco = raw_input.split("/")
+                if Utils().is_valid_number_format(codigo) and not Utils.is_valid_product_code(codigo, produtos) and Utils.is_valid_price(preco):
+                    user_input.append(raw_input)
+                elif raw_input.upper() != "X":
+                    self.error_message("Dados não puderam ser validados","Siga o padrão codigo/nome/preço")
+            except:
+                self.error_message("Dados separados incorretamente", "Siga o padrão codigo/nome/preço")
+        return user_input
+    def remover_multiplos_produtos(self, produtos):
+        raw_input = ""
+        user_input = []
+        while raw_input.upper() != "X":
+            raw_input = input("Insira o numero do produto, insira X para encerrar: ")
+            if Utils().is_valid_product_code(raw_input, produtos):
+                user_input.append(int(raw_input))
+            elif raw_input.upper() != "X":
+                self.error_message("Não foi possivel validar o codigo do produto","Verifique o valor inserido")
+        return user_input
+
     
     def display_produtos(self, produtos):
         for i in produtos:
             print(f"{i}")
-            print('─' * 50)
     def display_reservas(self, reservas, produtos):
         for i in reservas:
             total = i.calcular_diaria()

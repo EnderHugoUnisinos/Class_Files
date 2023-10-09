@@ -32,7 +32,6 @@ class Quarto:
 
     def adiciona_consumo(self, codigo):
         self.consumo.append(codigo)
-
     def lista_consumo(self, produtos):
         lista_consumo = []
         for i in self.get_consumo():
@@ -40,7 +39,6 @@ class Quarto:
                 if j.get_codigo() == i:
                     lista_consumo.append(j)
         return lista_consumo
-    
     def valor_total_consumo(self, produtos):
         total_value = 0
         for i in self.get_consumo():
@@ -49,7 +47,6 @@ class Quarto:
                     total_value += j.get_preco()
         
         return total_value
-    
     def limpa_consumo(self):
         self.set_consumo([])
 
@@ -61,14 +58,15 @@ class Quarto:
         serialized_string = "{}/{}/{}/{}".format(self.get_numero(),self.get_categoria(),self.get_diaria(),consumo_string)
         
         return serialized_string
-    
     def deserializar(self, string):
         split_string = string.strip().split("/")
         split_string[0] #numero
         split_string[1] #categoria
         split_string[2] #diaria
-        split_string[3] #consumo
-        
+        try:
+            split_string[3] #consumo
+        except:
+            split_string.append("") 
         self.set_numero(split_string[0])
         self.set_categoria(split_string[1])
         self.set_diaria(float(split_string[2]))

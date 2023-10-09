@@ -11,7 +11,6 @@ class SystemModel:
     
     def get_paths(self):
         return [self.pousada_path, self.produto_path, self.quarto_path, self.reserva_path]
-
     def get_pousada(self):
         return self.pousada
 
@@ -22,7 +21,6 @@ class SystemModel:
         self.write_to_file(dadosDict["produtos"], paths[1])
         self.write_to_file(dadosDict["quartos"], paths[2])
         self.write_to_file(dadosDict["reservas"], paths[3])
-
     def carregar_dados(self):
         paths = self.get_paths()
         pousadaString = self.read_from_file(paths[0])
@@ -33,44 +31,40 @@ class SystemModel:
     
     def realizar_check_in(self, reservas):
         self.get_pousada().realizar_check_in(reservas)
-    
     def realizar_check_out(self, reservas):
         return self.get_pousada().realizar_check_out(reservas)
-
     def search_for_reservas(self, cliente):
         return self.get_pousada().search_for_reservas(cliente)
-
     def cancelar_reserva(self, cliente):
         self.get_pousada().cancela_reserva(cliente)
-
     def realizar_reserva(self, dados):
         self.get_pousada().realiza_reserva(dados["dia_inicio"],dados["dia_fim"],dados["cliente"],self.get_pousada().search_for_quarto(dados["quarto"]))
-
-    def get_produtos(self):
-        produtos = self.get_pousada().get_produtos()
-        return produtos
-    
-    def write_to_file(self, string_list, path):
-        try:
-            with open(path, "w") as file:
-                file.writelines(line + "\n" for line in string_list)
-            return True
-        except: 
-            return False
-    
-    def read_from_file(self, path):
-        try:
-            with open(path, "r") as file:
-                string = file.readlines()
-            return string
-        except:
-            return False
-
     def consultar_disponibilidade(self, data, quarto):
-        return self.get_pousada().consulta_disponibilidade(data, quarto)
-        
+        return self.get_pousada().consulta_disponibilidade(data, quarto)   
     def consultar_reserva(self, data, cliente, quarto):
         return self.get_pousada().consulta_reserva(data, cliente, quarto)
+
+    def adicionar_quarto(self, quarto):
+        self.pousada.adicionar_quarto(quarto)
+    def remover_quarto(self, numero):
+        self.pousada.remover_quarto(numero)
+    def adicionar_multiplos_quartos(self, lista):
+        for i in lista:
+            self.pousada.adicionar_quarto(i)
+    def remover_multiplos_quartos(self, lista):
+        for i in lista:
+            self.pousada.remover_quarto(i)
+
+    def adicionar_produto(self, produto):
+        self.pousada.adicionar_produto(produto)
+    def remover_produto(self, produto):
+        self.pousada.remover_produto(produto)
+    def adicionar_multiplos_produtos(self, lista):
+        for i in lista:
+            self.pousada.adicionar_produto(i)
+    def remover_multiplos_produtos(self, lista):
+        for i in lista:
+            self.pousada.remover_produto(i)
 
     def registrar_consumo(self, cliente, consumo):
         modified = 0
@@ -80,3 +74,28 @@ class SystemModel:
                 quarto.adiciona_consumo(j)
                 modified += 1
         return modified
+    
+    def get_produtos(self):
+        produtos = self.get_pousada().get_produtos()
+        return produtos
+    def get_quartos(self):
+        quartos = self.get_pousada().get_quartos()
+        return quartos
+
+    def write_to_file(self, string_list, path):
+        try:
+            with open(path, "w") as file:
+                file.writelines(line + "\n" for line in string_list)
+            return True
+        except: 
+            return False   
+    def read_from_file(self, path):
+        try:
+            with open(path, "r") as file:
+                string = file.readlines()
+            return string
+        except:
+            return False
+
+    def organizar_listas(self):
+        self.get_pousada().organizar_listas()

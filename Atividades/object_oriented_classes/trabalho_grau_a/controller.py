@@ -5,7 +5,7 @@ from utils import Utils
 class SystemController:
     def __init__(self) -> None:
         self.view = SystemView()
-        self.model = SystemModel("assets/pousada.txt","assets/produto.txt","assets/quarto.txt","assets/reserva.txt")
+        self.model=  SystemModel("assets/pousada.txt","assets/produto.txt","assets/quarto.txt","assets/reserva.txt")
         self.model.carregar_dados()
 
     def menu_principal(self):
@@ -29,14 +29,17 @@ class SystemController:
                 case "7":
                     self.registrar_consumo()
                 case "8":
+                    self.view.clear_console()
                     self.menu_quartos()
                 case "9":
+                    self.view.clear_console()
                     self.menu_produtos()
                 case "10":
                     self.model.salvar_dados()
                 case default:
                     self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 9)")
             self.view.await_input()
+            self.organizar_listas()
         
     def consultar_disponibilidade(self):
         user_input = self.view.consultar_disponibilidade()
@@ -49,7 +52,8 @@ class SystemController:
             self.view.print_data("Quarto indisponivel.")
     def consultar_reserva(self):
         produtos = self.model.get_produtos()
-        user_input = self.view.consultar_reserva()
+        quartos = self.model.get_quartos()
+        user_input = self.view.consultar_reserva(quartos)
         result = self.model.consultar_reserva(user_input["data"],user_input["cliente"],user_input["quarto"])
         self.view.clear_console()
         if result != None:
@@ -58,10 +62,11 @@ class SystemController:
             self.view.error_message("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
     def realizar_reserva(self):
         user_input = self.view.realizar_reserva()
-        result = self.model.consultar_disponibilidade([user_input["dia_inicio"],user_input["dia_fim"]], user_input["quarto"])
+        result_a = self.model.consultar_disponibilidade(user_input["dia_inicio"], user_input["quarto"])
+        result_b = self.model.consultar_disponibilidade(user_input["dia_fim"], user_input["quarto"])
         self.view.clear_console()
         #Testa se a consulta retornou algo
-        if result == None:
+        if all(v is None for v in [result_a, result_b]):
             try:
                 self.model.realizar_reserva(user_input)
                 self.view.success_message("Reserva realizada com sucesso")
@@ -126,17 +131,26 @@ class SystemController:
                 case default:
                     self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 5)")
             self.view.await_input()
+            self.organizar_listas()
 
     def adicionar_quarto(self):
-        user_input = self.view.adicionar_quarto()
+        quartos = self.model.get_quartos()
+        user_input = self.view.adicionar_quarto(quartos)
+        self.model.adicionar_quarto(user_input)
     def remover_quarto(self):
-        user_input = self.view.remover_quarto()
+        quartos = self.model.get_quartos()
+        user_input = self.view.remover_quarto(quartos)
+        self.model.remover_quarto(user_input)
     def adicionar_multiplos_quartos(self):
-        user_input = self.view.adicionar_multiplos_quartos()
+        quartos = self.model.get_quartos()
+        user_input_list = self.view.adicionar_multiplos_quartos(quartos)
+        self.model.adicionar_multiplos_quartos(user_input_list)
     def remover_multiplos_quartos(self):
-        user_input = self.view.remover_multiplos_quartos()
+        quartos = self.model.get_quartos()
+        user_input_list = self.view.remover_multiplos_quartos(quartos)
+        self.model.remover_multiplos_quartos(user_input_list)
     def listar_quartos(self):
-        quartos = self.model.get_pousada().get_quartos()
+        quartos = self.model.get_quartos()
         self.view.display_quartos(quartos)
 
     def menu_produtos(self):
@@ -150,18 +164,31 @@ class SystemController:
                 case "2":
                     self.remover_produto()
                 case "3":
-                    self.modificar_produto()
-                case "4":
                     self.listar_produtos()
                 case default:
                     self.view.error_message("Numero inserido invalido","Insira um numero presente no menu (0 - 4)")
             self.view.await_input()
+            self.organizar_listas()
         
     def adicionar_produto(self):
-        pass
+        produtos = self.model.get_produtos()
+        user_input = self.view.adicionar_produto(produtos)
+        self.model.adicionar_produto(user_input)
     def remover_produto(self):
-        pass
-    def modificar_produto(self):
-        pass
+        produtos = self.model.get_produtos()
+        user_input = self.view.remover_produto(produtos)
+        self.model.remover_produto(user_input)
+    def adicionar_multiplos_produtos(self):
+        produtos = self.model.get_produtos()
+        user_input_list = self.view.adicionar_multiplos_produtos(produtos)
+        self.model.adicionar_multiplos_produtos(user_input_list)
+    def remover_multiplos_produtos(self):
+        produtos = self.model.get_produtos()
+        user_input_list = self.view.remover_multiplos_produtos(produtos)
+        self.model.remover_multiplos_produtos(user_input_list)
     def listar_produtos(self):
-        pass
+        produtos = self.model.get_produtos()
+        self.view.display_produtos(produtos)
+
+    def organizar_listas(self):
+        self.model.organizar_listas()
