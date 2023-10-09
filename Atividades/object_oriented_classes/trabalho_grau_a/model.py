@@ -81,6 +81,9 @@ class SystemModel:
     def getQuartos(self):
         quartos = self.getPousada().getQuartos()
         return quartos
+    def getReservas(self):
+        reservas = self.getPousada().getReservas()
+        return reservas
 
     def writeToFile(self, stringList, path):
         try:

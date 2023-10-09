@@ -111,11 +111,12 @@ class SystemView:
     def realizarCheckout(self):
         userInput = input("Insira o nome do cliente da reserva que deseja realizar check-out: ")
         return userInput 
-    def registrarConsumo(self, produtos):
+    def registrarConsumo(self, produtos, reservas):
         userInput = {"cliente":"","consumo":[]}
         
         userInput["cliente"] = input("Insira o nome do cliente cujo consumo deseja reservar: ")
-        
+        if not Utils().clienteCheckedIn(userInput["cliente"], reservas):
+            return None
         self.displayProdutos(produtos)
         rawInput = ""
         while rawInput != "X":
@@ -256,12 +257,15 @@ class SystemView:
             print(f"{i}")
     def displayReservas(self, reservas, produtos):
         for i in reservas:
-            total = i.calcularDiaria()
+            totalDiaria = i.calcularDiaria()
+            totalConsumo = 0
             for j in i.getQuarto().listaConsumo(produtos):
-                total += j.getPreco()
+                totalConsumo += j.getPreco()
+            total = totalConsumo + totalDiaria
             print(f"\nReserva\n{i}")
-            print(f"\nQuarto\n{i.getQuarto()}\n\nProdutos")
+            print(f"\nQuarto\n{i.getQuarto()}\nDiaria total: {totalDiaria}\n\nProdutos")
             self.displayProdutos(i.getQuarto().listaConsumo(produtos))
+            print(f"Consumo total: {totalConsumo}")
             print(f"\nTotal: {total}")
             print('─' * 50)
     def displayQuartos(self, quartos):

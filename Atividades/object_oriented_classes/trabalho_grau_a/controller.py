@@ -100,25 +100,33 @@ class SystemController:
         userInput = self.view.realizarCheckin()
         result = self.model.searchForReservas(userInput)
         self.view.clearConsole()
-        if result != None:
+        if result != []:
             self.view.displayReservas(result, produtos)
             self.model.realizarCheckIn(result)
         else: 
             self.view.errorMessage("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
     def realizarCheckOut(self):
         produtos = self.model.getProdutos()
+        reservas = self.model.getReservas()
         userInput = self.view.realizarCheckout()
         result = self.model.searchForReservas(userInput)
         self.view.clearConsole()
-        if result != None:
-            self.view.displayReservas(result, produtos)
-            self.model.realizarCheckOut(result)
+        if result != []:
+            if Utils().clienteCheckedIn(result[0], reservas):
+                self.view.displayReservas(result, produtos)
+                self.model.realizarCheckOut(result)
+            else:
+                self.view.errorMessage("Não foi encontrada reserva em check-in para o usuario.","Certifique-se que o nome foi digitado corretamente")
         else:
             self.view.errorMessage("Reserva não encontrada.","Verifique se os dados inseridos estão corretos")
     def registrarConsumo(self):
         produtos = self.model.getProdutos()
-        userInput = self.view.registrarConsumo(produtos)
-        self.model.registrarConsumo(userInput["cliente"],userInput["consumo"])
+        reservas = self.model.getReservas()
+        userInput = self.view.registrarConsumo(produtos, reservas)
+        if userInput != None:
+            self.model.registrarConsumo(userInput["cliente"],userInput["consumo"])
+        else:
+            self.view.errorMessage("Não foi encontrada reserva em check-in para o usuario", "Certifique-se que o nome foi digitado corretamente")
     def salvarDados(self):
         self.model.salvarDados()
         self.model.carregarDados()

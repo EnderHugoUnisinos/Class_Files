@@ -65,6 +65,16 @@ class Utils:
             return price > 0
         except ValueError:
             return False  
+    
+    @staticmethod
+    def clienteCheckedIn(cliente, reservas):
+        try:
+            for i in reservas:
+                if i.getCliente() == cliente and i.getStatus() == "I":
+                    return True
+            return False
+        except ValueError:
+            return False  
     @staticmethod
     def convertStringToDate(dateString):
         try:
