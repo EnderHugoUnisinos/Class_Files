@@ -87,7 +87,7 @@ class SystemController:
         result = self.model.consultarReserva(None, userInput, None)
         self.view.clearConsole()
         #Testa se a consulta retornou algo
-        if result[0] != None:
+        if result != []:
             try:
                 self.model.cancelarReserva(userInput)
                 self.view.successMessage("Reserva cancelada com sucesso")
@@ -112,7 +112,7 @@ class SystemController:
         result = self.model.searchForReservas(userInput)
         self.view.clearConsole()
         if result != []:
-            if Utils().clienteCheckedIn(result[0], reservas):
+            if Utils().clienteCheckedIn(userInput, reservas):
                 self.view.displayReservas(result, produtos)
                 self.model.realizarCheckOut(result)
             else:
