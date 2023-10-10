@@ -1,21 +1,13 @@
 from datetime import datetime
 class Utils:
     @staticmethod
-    def checkDateOverlap(reservedDates, testDate):
-        reservedStartDate, reservedEndDate = map(
-            lambda x: datetime.strptime(x, "%d-%m-%Y"), reservedDates
-        )
-        testDate = datetime.strptime(testDate, "%d-%m-%Y")
-
-        if reservedStartDate <= testDate <= reservedEndDate:
-            return True
-        else:
-            return False
-    @staticmethod
-    def isValidDateFormat(dateString):
+    def isValidProductCode(productCode, products):
         try:
-            datetime.strptime(dateString, "%d-%m-%Y")
-            return True
+            productCode = int(productCode)
+            for i in products:
+                if int(i.getCodigo()) == productCode:
+                    return True
+            return False
         except ValueError:
             return False
     @staticmethod
@@ -26,6 +18,14 @@ class Utils:
                 if int(i.getNumero()) == roomNumber:
                     return True
             return False
+        except ValueError:
+            return False
+    
+    @staticmethod
+    def isValidDateFormat(dateString):
+        try:
+            datetime.strptime(dateString, "%d-%m-%Y")
+            return True
         except ValueError:
             return False
     @staticmethod
@@ -43,16 +43,6 @@ class Utils:
         except ValueError:
             return False
     @staticmethod
-    def isValidProductCode(productCode, products):
-        try:
-            productCode = int(productCode)
-            for i in products:
-                if int(i.getCodigo()) == productCode:
-                    return True
-            return False
-        except ValueError:
-            return False
-    @staticmethod
     def isValidCategory(category):
         if category in ["S","M","P"]:
             return True
@@ -66,6 +56,17 @@ class Utils:
         except ValueError:
             return False  
     
+    @staticmethod
+    def checkDateOverlap(reservedDates, testDate):
+        reservedStartDate, reservedEndDate = map(
+            lambda x: datetime.strptime(x, "%d-%m-%Y"), reservedDates
+        )
+        testDate = datetime.strptime(testDate, "%d-%m-%Y")
+
+        if reservedStartDate <= testDate <= reservedEndDate:
+            return True
+        else:
+            return False
     @staticmethod
     def clienteCheckedIn(cliente, reservas):
         try:

@@ -251,7 +251,6 @@ class SystemView:
                 self.errorMessage("Não foi possivel validar o codigo do produto","Verifique o valor inserido")
         return userInput
 
-    
     def displayProdutos(self, produtos):
         for i in produtos:
             print(f"{i}")
