@@ -1,11 +1,11 @@
 class Quarto:
-    def __init__ (self, numero = None, categoria = None, diaria = None, consumo = []):
-        self.numero = numero
-        self.categoria = categoria
-        self.diaria = diaria
+    def __init__ (self, __numero = None, __categoria = None, __diaria = None, __consumo = []):
+        self.numero = __numero
+        self.categoria = __categoria
+        self.diaria = __diaria
         
         #consumo provavelmente se encaixa melhor em reserva, mas vamos manter aqui de acordo com o diagrama
-        self.consumo = consumo
+        self.consumo = __consumo
     
     def __str__(self) -> str:
         return f'Numero: {self.getNumero()}, Categoria: {self.getCategoria()}, Diaria: {self.getDiaria()}'     

@@ -1,8 +1,8 @@
 class Produto:
-    def __init__ (self, codigo = None, nome = None, preco = None):
-        self.codigo = codigo
-        self.nome = nome
-        self.preco = preco
+    def __init__ (self, __codigo = None, __nome = None, __preco = None):
+        self.codigo = __codigo
+        self.nome = __nome
+        self.preco = __preco
 
     def __str__(self) -> str:
         return f"Codigo: {self.getCodigo()}, Nome: {self.getNome()}, Preço: {self.getPreco()}"

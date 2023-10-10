@@ -1,11 +1,11 @@
 from utils import Utils
 class Reserva:
-    def __init__ (self, diaInicio = None, diaFim = None, cliente = None, quarto = None, status = 'A'):
-        self.diaInicio = diaInicio
-        self.diaFim = diaFim
-        self.cliente = cliente
-        self.quarto = quarto
-        self.status = status
+    def __init__ (self, __diaInicio = None, __diaFim = None, __cliente = None, __quarto = None, __status = 'A'):
+        self.diaInicio = __diaInicio
+        self.diaFim = __diaFim
+        self.cliente = __cliente
+        self.quarto = __quarto
+        self.status = __status
     
     def __str__(self) -> str:
         dias = self.contarDias()

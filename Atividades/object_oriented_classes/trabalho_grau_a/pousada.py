@@ -4,12 +4,12 @@ from produto import Produto
 from utils import Utils
 
 class Pousada:
-    def __init__ (self, nome = "", contato = "", quartos = [], reservas = [], produtos = []):
-        self.nome = nome
-        self.contato = contato
-        self.quartos = quartos
-        self.reservas = reservas
-        self.produtos = produtos
+    def __init__ (self, __nome = "", __contato = "", __quartos = [], __reservas = [], __produtos = []):
+        self.nome = __nome
+        self.contato = __contato
+        self.quartos = __quartos
+        self.reservas = __reservas
+        self.produtos = __produtos
 
     def getNome(self):
         return self.nome

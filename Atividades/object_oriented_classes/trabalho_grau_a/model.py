@@ -2,11 +2,11 @@ from pousada import Pousada
 from utils import Utils
 
 class SystemModel:
-    def __init__(self, pousadaPath, produtoPath, quartoPath, reservaPath) -> None:
-        self.pousadaPath = pousadaPath
-        self.produtoPath = produtoPath
-        self.quartoPath = quartoPath
-        self.reservaPath = reservaPath
+    def __init__(self, __pousadaPath, __produtoPath, __quartoPath, __reservaPath) -> None:
+        self.pousadaPath = __pousadaPath
+        self.produtoPath = __produtoPath
+        self.quartoPath = __quartoPath
+        self.reservaPath = __reservaPath
         self.pousada = Pousada()
     
     def getPaths(self):
