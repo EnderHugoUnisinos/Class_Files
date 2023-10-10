@@ -7,6 +7,7 @@ class System():
         self.menu()
     
     def menu(self):
+        #montar sistema
         print("[0]: ")
         print("[1]: ")
         print("[2]: ")
