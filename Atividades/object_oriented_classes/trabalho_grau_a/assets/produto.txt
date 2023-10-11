@@ -1,10 +1,20 @@
 001/Jantar de Bife/49.99
+001/Jantar de Bife/49.99
+002/Bebidas do Minibar/39.95
 002/Bebidas do Minibar/39.95
 003/Kit de Higiene Pessoal/19.99
+003/Kit de Higiene Pessoal/19.99
+004/Cafe e Petiscos/12.99
 004/Cafe e Petiscos/12.99
 005/Buffet de Cafe da Manha/35.0
+005/Buffet de Cafe da Manha/35.0
+006/Sabonete e Shampoo/6.99
 006/Sabonete e Shampoo/6.99
 007/Piscina e Spa/60.0
+007/Piscina e Spa/60.0
+008/Servico de Quarto/25.5
 008/Servico de Quarto/25.5
 009/Lavanderia/20.0
+009/Lavanderia/20.0
+010/Acesso a Internet/10.0
 010/Acesso a Internet/10.0
