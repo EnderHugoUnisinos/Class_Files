@@ -8,7 +8,7 @@ class Data():
             data = "01/01/0001"
         
     def __str__(self):
-        return f"Data: {self.getData()}, Mês por extenso: {self.getMesExtenso()}, Bissexto?: {self.isBissexto()}"
+        return f"Data: {self.getData()}, Dia:{self.getDia()}, Mês:{self.getMes()}, Mês por extenso: {self.getMesExtenso()}, Ano: {self.getAno()}, Bissexto?: {self.isBissexto()}"
         
     def __repr__(self):
         return f"Data:({self.getData()})"

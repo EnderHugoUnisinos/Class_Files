@@ -36,18 +36,30 @@ class Elevador():
         if self.get_pessoas_presentes() < self.get_capacidade():
             nova_quantidade = self.get_pessoas_presentes() + 1
             self.set_pessoas_presentes(nova_quantidade)
+            return True
+        else:
+            return False
     
     def sair(self):
         if self.get_pessoas_presentes() > 0:
             nova_quantidade = self.get_pessoas_presentes() - 1
             self.set_pessoas_presentes(nova_quantidade)
+            return True
+        else:
+            return False
             
     def subir(self):
         if self.get_andar_atual() < (self.get_total_andares() - 1):
             andar_acima = self.get_andar_atual() + 1
             self.set_andar_atual(andar_acima)
+            return True
+        else:
+            return False
             
     def descer(self):
         if self.get_andar_atual() > 0:
             andar_abaixo = self.get_andar_atual() - 1
             self.set_andar_atual(andar_abaixo)
+            return True
+        else:
+            return False
