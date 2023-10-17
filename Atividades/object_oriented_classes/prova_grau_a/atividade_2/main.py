@@ -1,4 +1,5 @@
 from elevador import Elevador
+import os
 class System():
     def __init__(self):
         self.elevador = Elevador(10, 6)
@@ -17,23 +18,19 @@ class System():
             print("[5]: Ver status do elevador")
             print("[6]: Inicializar")
             print("[0]: Sair")
-
             user_input = input("Entre sua escolha: ")
             print("\n")
-
+            clear = lambda: os.system('cls')
+            clear()
             match user_input:
                 case '1':
-                    if not self.elevador.entrar():
-                        print("Limite atingido, não foi possivel entrar.")
+                    self.entrar_elevador()
                 case '2':
-                    if not self.elevador.sair():
-                        print("Elevador vazio, não foi possivel sair.")
+                    self.sair_elevador()
                 case '3':
-                    if not self.elevador.subir():
-                        print("Ultimo andar atingido, não é possivel subir.")
+                    self.subir_elevador()
                 case '4':
-                    if not self.elevador.descer():
-                        print("Terreo atingido, não é possivel descer")
+                    self.descer_elevador()
                 case '5':
                     print(self.elevador)
                 case '6':
@@ -42,6 +39,19 @@ class System():
                     quit()
                 case _:
                     print("Escolha invalida, tente novamente.")
+
+    def entrar_elevador(self):
+        if not self.elevador.entrar():
+            print("Limite atingido, não foi possivel entrar.")
+    def sair_elevador(self):
+        if not self.elevador.sair():
+            print("Elevador vazio, não foi possivel sair.")
+    def subir_elevador(self):
+        if not self.elevador.subir():
+            print("Ultimo andar atingido, não é possivel subir.")
+    def descer_elevador(self):
+        if not self.elevador.descer():
+            print("Terreo atingido, não é possivel descer")
 
     def inicializar_elevador(self):
         total_andares = int(input("Insira o numero de andares: "))

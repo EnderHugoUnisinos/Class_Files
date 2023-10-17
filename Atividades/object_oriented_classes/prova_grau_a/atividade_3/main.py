@@ -1,4 +1,5 @@
 from data import Data
+import os
 class System():
     def __init__(self):
         self.datas = []
@@ -21,6 +22,8 @@ class System():
             print("[3]: Comparar datas")
             user_input = input("Insira a opção desejada: ")
             print("\n")
+            clear = lambda: os.system('cls')
+            clear()
             match user_input:
                 case "0":
                     self.sair()

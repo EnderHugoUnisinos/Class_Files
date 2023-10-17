@@ -5,7 +5,7 @@ class Data():
         if (Utils().validar_formato_data(data)):
             self.data = data
         else:
-            data = "01/01/0001"
+            self.data = "01/01/0001"
         
     def __str__(self):
         return f"Data: {self.getData()}, Dia:{self.getDia()}, Mês:{self.getMes()}, Mês por extenso: {self.getMesExtenso()}, Ano: {self.getAno()}, Bissexto?: {self.isBissexto()}"
