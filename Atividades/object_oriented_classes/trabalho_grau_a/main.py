@@ -1,12 +1,14 @@
-from model import SystemModel
+from controller import SystemController
 class System():
-    def iniciar_programa(self):
-        system_model = SystemModel()
-        system_model.model_menu_principal()
+    def iniciarPrograma(self):
+        #could be just SystemController().menuPrincipal()
+        systemController = SystemController()
+        systemController.menuPrincipal()
 
 def main():
     system = System()
-    system.iniciar_programa()
+    system.iniciarPrograma()
 
 if __name__ == "__main__":
     main()
+

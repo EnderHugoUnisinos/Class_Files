@@ -1,32 +1,92 @@
+from datetime import datetime
 class Utils:
-    def verificar_data_overlap(self, data_reservada, data_teste):
-        data_reservada_separated = [data_reservada[0].split("-"),data_reservada[1].split("-")]
-        data_teste_separated = [data_teste[0].split("-"),data_teste[1].split("-")]
-        
-        data_reservada_separated = {"start": {"day": int(data_reservada_separated[0][0]),"month": int(data_reservada_separated[0][1]),"year" : int(data_reservada_separated[0][2])}, "ending": {"day": int(data_reservada_separated[1][0]),"month": int(data_reservada_separated[1][1]),"year" : int(data_reservada_separated[1][2])}}
-        data_teste_separated = {"start": {"day": int(data_teste_separated[0][0]),"month": int(data_teste_separated[0][1]),"year" : int(data_teste_separated[0][2])}, "ending": {"day": int(data_teste_separated[1][0]),"month": int(data_teste_separated[1][1]),"year" : int(data_teste_separated[1][2])}}
+    @staticmethod
+    def isValidProductCode(productCode, products):
+        try:
+            productCode = int(productCode)
+            for i in products:
+                if int(i.getCodigo()) == productCode:
+                    return True
+            return False
+        except ValueError:
+            return False
+    @staticmethod
+    def isValidRoomNumber(roomNumber, rooms):
+        try:
+            roomNumber = int(roomNumber)
+            for i in rooms:
+                if int(i.getNumero()) == roomNumber:
+                    return True
+            return False
+        except ValueError:
+            return False
+    
+    @staticmethod
+    def isValidDateFormat(dateString):
+        try:
+            datetime.strptime(dateString, "%d-%m-%Y")
+            return True
+        except ValueError:
+            return False
+    @staticmethod
+    def isValidNumberFormat(roomNumber):
+        try:
+            roomNumber = int(roomNumber)
+            return roomNumber > 0
+        except ValueError:
+            return False
+    @staticmethod
+    def isValidCodeFormat(roomNumber):
+        try:
+            roomNumber = int(roomNumber)
+            return roomNumber > 0
+        except ValueError:
+            return False
+    @staticmethod
+    def isValidCategory(category):
+        if category in ["S","M","P"]:
+            return True
+        else:
+            return False
+    @staticmethod
+    def isValidPrice(price):
+        try:
+            price = int(price)
+            return price > 0
+        except ValueError:
+            return False  
+    
+    @staticmethod
+    def checkDateOverlap(reservedDates, testDate):
+        reservedStartDate, reservedEndDate = map(
+            lambda x: datetime.strptime(x, "%d-%m-%Y"), reservedDates
+        )
+        testDate = datetime.strptime(testDate, "%d-%m-%Y")
 
-        day = data_reservada_separated["start"]["day"]
-        month = data_reservada_separated["start"]["month"]
-        year = data_reservada_separated["start"]["year"]
-        
-        overlap_found = False
-
-        while True:
-            if day > 31:
-                day = 0
-                month += 1
-            if month > 12:
-                month = 0
-                year += 1
-            if day == data_reservada_separated["ending"]["day"] and month == data_reservada_separated["ending"]["month"] and year == data_reservada_separated["ending"]["year"]:
-                break
-
-            if day == data_teste_separated["start"]["day"] and month == data_teste_separated["start"]["month"] and year == data_teste_separated["start"]["year"]:
-                overlap_found = True
-            if day == data_teste_separated["ending"]["day"] and month == data_teste_separated["ending"]["month"] and year == data_teste_separated["ending"]["year"]:
-                overlap_found = True
-
-            day += 1
-        
-        return overlap_found
+        if reservedStartDate <= testDate <= reservedEndDate:
+            return True
+        else:
+            return False
+    @staticmethod
+    def clienteCheckedIn(cliente, reservas):
+        try:
+            for i in reservas:
+                if i.getCliente() == cliente and i.getStatus() == "I":
+                    return True
+            return False
+        except ValueError:
+            return False  
+    @staticmethod
+    def convertStringToDate(dateString):
+        try:
+            date = datetime.strptime(dateString, "%d-%m-%Y")
+            return date
+        except ValueError:
+            return False
+    @staticmethod
+    def countDays(dateRange):
+        startDate, endDate = dateRange
+        startDate = datetime.strptime(startDate, "%d-%m-%Y")
+        endDate = datetime.strptime(endDate, "%d-%m-%Y")
+        delta = endDate - startDate
+        return delta.days
