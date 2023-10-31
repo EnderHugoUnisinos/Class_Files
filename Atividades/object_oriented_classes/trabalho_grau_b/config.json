@@ -1,0 +1,4 @@
+{
+    "computation_path": "computation.txt",
+    "queue_path": "process_queue.txt"
+}
