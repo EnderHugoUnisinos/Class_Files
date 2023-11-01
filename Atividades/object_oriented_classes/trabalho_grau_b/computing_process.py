@@ -4,7 +4,7 @@ class ComputingProcess(Process):
         super().__init__()
         self.expression = expression
     def __str__(self) -> str:
-        return f"{super().__str__()}, Expression: {self.expression}"
+        return f"{super().__str__()}, Expression: {self.expression}, Type: ComputingProcess"
     def __repr__(self) -> str:
         return f"ComputingProcess({self.get_pid()})"
     def serialize(self):
@@ -14,4 +14,4 @@ class ComputingProcess(Process):
     
     def execute(self):
         result = eval(self.expression)
-        return result
+        print(result)
