@@ -11,9 +11,7 @@ class ReadingProcess(Process):
     def __repr__(self) -> str:
         return f"ReadingProcess({self.get_pid()})"
     def serialize(self):
-        pass
-    def deserialize(self):
-        pass
+        return f"R, {self.pid}"
     
     def execute(self):
         with open(self.path, "r+") as file:

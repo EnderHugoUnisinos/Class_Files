@@ -8,9 +8,7 @@ class ComputingProcess(Process):
     def __repr__(self) -> str:
         return f"ComputingProcess({self.get_pid()})"
     def serialize(self):
-        pass
-    def deserialize(self):
-        pass
+        return f"C, {self.pid}, {self.expression}"
     
     def execute(self):
         result = eval(self.expression)

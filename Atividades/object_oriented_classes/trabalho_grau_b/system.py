@@ -8,14 +8,16 @@ class System():
     def __init__(self) -> None:
         self.config = self.fetch_config()
         self.process_queue = []
+        self.load_queue()
     
     def menu(self):
         while True:
+            self.save_queue()
             print("\n[1] : Create process")
             print("[2] : Execute next process")
             print("[3] : Execute specific process")
-            print("[4] : Save process queue")
-            print("[5] : Load process queue from file")
+            #print("[4] : Save process queue")
+            #print("[5] : Load process queue from file")
             print("[0] : Exit\n")
             
             user_input = input("Select one of the options written above: ")
@@ -28,10 +30,10 @@ class System():
                     self.execute_next()
                 case "3":
                     self.execute_specific()
-                case "4":
-                    self.save_queue()
-                case "5":
-                    self.load_queue()
+                #case "4":
+                #    self.save_queue()
+                #case "5":
+                #    self.load_queue()
                 case _:
                     self.error_message("Please select one of the given menu options.")
     
@@ -80,10 +82,32 @@ class System():
         except:
             self.error_message("Something went wrong. Returning to main menu...") 
     def save_queue(self):
-        pass
+        serialized_queue = []
+        for i in self.process_queue:
+            serialized_queue.append(i.serialize())
+        try:
+            with open(self.config["queue_path"], "w") as file:
+                file.writelines(line + "\n" for line in serialized_queue)
+        except: 
+            self.error_message("Something went wrong.")
+             
     def load_queue(self):
-        pass
-    
+        self.process_queue = []
+        with open(self.config["queue_path"], "r+") as file:
+            serialized_queue = file.readlines()
+            file.truncate(0)
+        for i in serialized_queue:
+            data = i.split(",")
+            match data[0]:
+                case "W":
+                    self.process_queue.append(WritingProcess(data[1], self.config["computation_path"]))
+                case "R":
+                    self.process_queue.append(ReadingProcess(self.process_queue, self.config["computation_path"]))
+                case "P":
+                    self.process_queue.append(PrintingProcess(self.process_queue))
+                case "C":
+                    self.process_queue.append(ComputingProcess(data[1]))
+
     def find_by_pid(self, pid):
         try:
             for id, i in enumerate(self.process_queue):

@@ -8,9 +8,7 @@ class PrintingProcess(Process):
     def __repr__(self) -> str:
         return f"PrintingProcess({self.get_pid()})"
     def serialize(self):
-        pass
-    def deserialize(self):
-        pass
+        return f"P, {self.pid}"
     
     def execute(self):
         for i in self.process_list:

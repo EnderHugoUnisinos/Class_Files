@@ -9,9 +9,7 @@ class WritingProcess(Process):
     def __repr__(self) -> str:
         return f"WritingProcess({self.get_pid})"
     def serialize(self):
-        pass
-    def deserialize(self):
-        pass
+        return f"W, {self.pid}, {self.expression}"
 
     def execute(self):
         try:
